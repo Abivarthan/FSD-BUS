@@ -1,0 +1,16 @@
+[2026-03-13 10:18:48] [32minfo[39m: 🚀 Fleet Management API running on port 5000
+[2026-03-13 10:18:48] [32minfo[39m: 📊 Environment: development
+[2026-03-13 10:18:48] [31merror[39m: ❌ MongoDB connection failed: options usenewurlparser, useunifiedtopology are not supported
+MongoParseError: options usenewurlparser, useunifiedtopology are not supported
+    at parseOptions (C:\Users\abipo\Downloads\fleet-management-system\fleet-system\backend\node_modules\mongodb\lib\connection_string.js:273:15)
+    at new MongoClient (C:\Users\abipo\Downloads\fleet-management-system\fleet-system\backend\node_modules\mongodb\lib\mongo_client.js:67:61)
+    at NativeConnection.createClient (C:\Users\abipo\Downloads\fleet-management-system\fleet-system\backend\node_modules\mongoose\lib\drivers\node-mongodb-native\connection.js:334:14)
+    at NativeConnection.openUri (C:\Users\abipo\Downloads\fleet-management-system\fleet-system\backend\node_modules\mongoose\lib\connection.js:1074:34)
+    at Mongoose.connect (C:\Users\abipo\Downloads\fleet-management-system\fleet-system\backend\node_modules\mongoose\lib\mongoose.js:469:15)
+    at connectDB (C:\Users\abipo\Downloads\fleet-management-system\fleet-system\backend\src\config\database.js:7:33)
+    at Object.<anonymous> (C:\Users\abipo\Downloads\fleet-management-system\fleet-system\backend\server.js:7:1)
+    at Module._compile (node:internal/modules/cjs/loader:1546:14)
+    at Object..js (node:internal/modules/cjs/loader:1689:10)
+    at Module.load (node:internal/modules/cjs/loader:1318:32) {
+  errorLabelSet: Set(0) {}
+}
