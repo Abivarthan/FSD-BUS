@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import api from '../services/api';
-import 'leaflet/dist/leaflet.css';
 
 // Fix marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -13,24 +12,31 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
 });
 
-// Custom Icons
-const busIcon = new L.DivIcon({
-  className: 'custom-bus-icon',
-  html: `<div style="width:40px;height:40px;background:#2563EB;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 15px rgba(37,99,235,0.4);border:3px solid white;">🚌</div>`,
-  iconSize: [40, 40],
-  iconAnchor: [20, 20]
-});
+// Base styles for DivIcons
+const iconStyles = `
+  width: 40px; 
+  height: 40px; 
+  background: white; 
+  border-radius: 12px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 22px; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+  border: 2px solid #2563EB;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+`;
 
 const originIcon = new L.DivIcon({
   className: 'custom-origin-icon',
-  html: `<div style="width:30px;height:30px;background:#10B981;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:3px solid white;">📍</div>`,
+  html: `<div style="width:30px;height:30px;background:#10B981;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:3px solid white;box-shadow:0 0 10px rgba(16,185,129,0.4);">📍</div>`,
   iconSize: [30, 30],
   iconAnchor: [15, 15]
 });
 
 const destIcon = new L.DivIcon({
   className: 'custom-dest-icon',
-  html: `<div style="width:30px;height:30px;background:#EF4444;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:3px solid white;">🏁</div>`,
+  html: `<div style="width:30px;height:30px;background:#EF4444;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:3px solid white;box-shadow:0 0 10px rgba(239,68,68,0.4);">🏁</div>`,
   iconSize: [30, 30],
   iconAnchor: [15, 15]
 });
@@ -39,6 +45,9 @@ const destIcon = new L.DivIcon({
 function ChangeView({ center, zoom, isFollowing }) {
   const map = useMap();
   useEffect(() => {
+    // Force map to recalculate size when parent container size changes or on mount
+    map.invalidateSize();
+    
     if (isFollowing && center) {
         map.setView(center, zoom, { animate: true });
     }
@@ -84,6 +93,23 @@ export default function TrackingPage() {
     return () => clearInterval(intervalRef.current);
   }, [id]);
 
+  const location = trackingData?.location;
+  const routePath = trackingData?.route?.waypoints?.map(w => [w.lat, w.lng]) || [];
+  const currentPos = location ? [location.lat, location.lng] : [13.1986, 77.7066];
+
+  const dynamicBusIcon = useMemo(() => {
+    return new L.DivIcon({
+      className: 'custom-bus-icon',
+      html: `
+        <div style="${iconStyles} transform: rotate(${location?.heading || 0}deg);">
+          🚌
+        </div>
+      `,
+      iconSize: [40, 40],
+      iconAnchor: [20, 20]
+    });
+  }, [location?.heading]);
+
   if (loading) return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
       <div className="flex flex-col items-center gap-4">
@@ -92,10 +118,6 @@ export default function TrackingPage() {
       </div>
     </div>
   );
-
-  const location = trackingData?.location;
-  const routePath = trackingData?.route?.waypoints?.map(w => [w.lat, w.lng]) || [];
-  const currentPos = location ? [location.lat, location.lng] : [12.9716, 77.5946];
 
   return (
     <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
@@ -119,20 +141,24 @@ export default function TrackingPage() {
       </div>
 
       <div className="flex-1 flex relative">
-        <div className="flex-1 relative z-10">
-          <MapContainer center={currentPos} zoom={13} className="h-full w-full" zoomControl={false}>
+        <div className="flex-1 relative z-10 h-full">
+          <MapContainer center={currentPos} zoom={13} style={{ height: '100%', width: '100%' }} zoomControl={false}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             
             {routePath.length > 0 && (
               <>
-                <Polyline positions={routePath} pathOptions={{ color: '#2563EB', weight: 4, opacity: 0.6, dashArray: '8, 12' }} />
+                {/* Background "Road" Effect */}
+                <Polyline positions={routePath} pathOptions={{ color: '#1E293B', weight: 10, opacity: 0.6, lineJoin: 'round' }} />
+                {/* Active Route Line */}
+                <Polyline positions={routePath} pathOptions={{ color: '#3B82F6', weight: 3, opacity: 0.8, dashArray: '10, 15', lineJoin: 'round' }} />
+                
                 <Marker position={routePath[0]} icon={originIcon} />
                 <Marker position={routePath[routePath.length - 1]} icon={destIcon} />
               </>
             )}
 
             {location && (
-              <Marker position={[location.lat, location.lng]} icon={busIcon}>
+              <Marker position={[location.lat, location.lng]} icon={dynamicBusIcon}>
                 <Popup className="custom-popup">
                   <div className="text-center font-sans p-1">
                     <p className="font-bold text-sm text-gray-900">🚌 {details?.vehicle?.model}</p>

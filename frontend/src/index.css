@@ -146,3 +146,31 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
   color: #1E293B !important;
 }
+
+/* Leaflet Fixes */
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+  background-color: #0F172A !important; /* Matches gray-900 for smooth loading */
+}
+
+.leaflet-control-container .leaflet-top,
+.leaflet-control-container .leaflet-bottom {
+  z-index: 1000 !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.custom-popup .leaflet-popup-content {
+  margin: 0;
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: white;
+}
