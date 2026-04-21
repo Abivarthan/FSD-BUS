@@ -24,6 +24,7 @@ const routeRoutes = require('./routes/routeRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const trackingRoutes = require('./routes/trackingRoutes');
 const customerRoutes = require('./routes/customerRoutes');
+const geofenceRoutes = require('./routes/geofenceRoutes');
 const path = require('path');
 
 const app = express();
@@ -75,6 +76,7 @@ app.use('/api/routes', routeRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/tracking', trackingRoutes);
 app.use('/api/customer', customerRoutes);
+app.use('/api/geofences', geofenceRoutes);
 
 // 404
 app.use((req, res) => {

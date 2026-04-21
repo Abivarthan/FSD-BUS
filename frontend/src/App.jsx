@@ -19,6 +19,8 @@ import Booking from './pages/Booking';
 import BookingDetails from './pages/BookingDetails';
 import TrackingPage from './pages/TrackingPage';
 import AdminBookings from './pages/AdminBookings';
+import TripPlaybackPage from './pages/TripPlaybackPage';
+import OptimizationReports from './pages/OptimizationReports';
 
 const ProtectedRoute = ({ children, adminOnly = false, customerOnly = false }) => {
   const { user, loading, isAdmin, isCustomer } = useAuth();
@@ -58,6 +60,9 @@ function AppRoutes() {
         <Route path="expenses" element={<Expenses />} />
         <Route path="maintenance" element={<Maintenance />} />
         <Route path="admin/bookings" element={<AdminBookings />} />
+        <Route path="tracking" element={<TrackingPage />} />
+        <Route path="playback/:tripId" element={<TripPlaybackPage />} />
+        <Route path="reports/optimization" element={<OptimizationReports />} />
         <Route path="reports" element={<Reports />} />
       </Route>
 

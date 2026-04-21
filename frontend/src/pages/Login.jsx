@@ -111,19 +111,19 @@ export default function Login() {
             <div className="grid grid-cols-2 gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => setForm({ email: 'admin@busms.com', password: 'password123' })}
+                onClick={() => setForm({ email: 'admin@fleetms.com', password: 'Admin@123' })}
                 className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all flex flex-col items-center gap-1"
               >
                 <span>🔑 Admin Role</span>
-                <span className="text-[8px] opacity-60 normal-case font-medium">admin@busms.com</span>
+                <span className="text-[8px] opacity-60 normal-case font-medium">admin@fleetms.com</span>
               </button>
               <button
                 type="button"
-                onClick={() => setForm({ email: 'customer@example.com', password: 'password123' })}
+                onClick={() => setForm({ email: 'customer@fleetms.com', password: 'Customer@123' })}
                 className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all flex flex-col items-center gap-1"
               >
                 <span>👤 Customer Role</span>
-                <span className="text-[8px] opacity-60 normal-case font-medium">customer@example.com</span>
+                <span className="text-[8px] opacity-60 normal-case font-medium">customer@fleetms.com</span>
               </button>
             </div>
 

@@ -7,17 +7,59 @@ export default function Home() {
   const { user, isAdmin, isCustomer } = useAuth();
   const [search, setSearch] = useState({ origin: '', destination: '' });
   const [routes, setRoutes] = useState([]);
+  const [locations, setLocations] = useState({ origins: [], destinations: [] });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const TAMIL_NADU_DISTRICTS = [
+    'Ariyalur', 'Chengalpattu', 'Chennai', 'Coimbatore', 'Cuddalore', 'Dharmapuri', 
+    'Dindigul', 'Erode', 'Kallakurichi', 'Kanchipuram', 'Kanyakumari', 'Karur', 
+    'Krishnagiri', 'Madurai', 'Mayiladuthurai', 'Nagapattinam', 'Namakkal', 
+    'Nilgiris', 'Perambalur', 'Pudukkottai', 'Ramanathapuram', 'Ranipet', 
+    'Salem', 'Sivaganga', 'Tenkasi', 'Thanjavur', 'Theni', 'Thoothukudi', 
+    'Tiruchirappalli', 'Tirunelveli', 'Tirupathur', 'Tiruppur', 'Tiruvallur', 
+    'Tiruvannamalai', 'Tiruvarur', 'Vellore', 'Viluppuram', 'Virudhunagar'
+  ].sort();
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const res = await api.get('/routes');
+        const allRoutes = res.data.data;
+        
+        const apiOrigins = allRoutes.map(r => r.origin);
+        const apiDestinations = allRoutes.map(r => r.destination);
+        
+        const mergedOrigins = [...new Set([...TAMIL_NADU_DISTRICTS, ...apiOrigins])].sort();
+        const mergedDestinations = [...new Set([...TAMIL_NADU_DISTRICTS, ...apiDestinations])].sort();
+        
+        setLocations({ origins: mergedOrigins, destinations: mergedDestinations });
+      } catch (err) {
+        console.error('Failed to fetch active locations:', err);
+        setLocations({ origins: TAMIL_NADU_DISTRICTS, destinations: TAMIL_NADU_DISTRICTS });
+      }
+    };
+    fetchLocations();
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     try {
-      const res = await api.get(`/routes?origin=${search.origin}&destination=${search.destination}`);
-      setRoutes(res.data.data);
+      console.log('Searching for:', search);
+      const res = await api.get(`/routes?origin=${encodeURIComponent(search.origin)}&destination=${encodeURIComponent(search.destination)}`);
+      
+      if (res.data.success) {
+        setRoutes(res.data.data);
+        if (res.data.data.length === 0) {
+          setError('No buses found for this route. Try a different search.');
+        }
+      }
     } catch (err) {
-      console.error(err);
+      console.error('Search Error:', err);
+      setError('Failed to connect to search service. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -69,28 +111,40 @@ export default function Home() {
             <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Origin</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">📍</span>
-                  <input 
-                    type="text" 
-                    placeholder="Where from?" 
-                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900"
+                <div className="relative group">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-primary transition-colors">📍</span>
+                  <select 
+                    className="w-full pl-12 pr-10 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900 appearance-none cursor-pointer hover:bg-gray-100"
                     value={search.origin}
                     onChange={e => setSearch(p => ({ ...p, origin: e.target.value }))}
-                  />
+                  >
+                    <option value="">Where from?</option>
+                    {locations.origins.map(loc => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </div>
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Destination</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">🏁</span>
-                  <input 
-                    type="text" 
-                    placeholder="Where to?" 
-                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900"
+                <div className="relative group">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-primary transition-colors">🏁</span>
+                  <select 
+                    className="w-full pl-12 pr-10 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900 appearance-none cursor-pointer hover:bg-gray-100"
                     value={search.destination}
                     onChange={e => setSearch(p => ({ ...p, destination: e.target.value }))}
-                  />
+                  >
+                    <option value="">Where to?</option>
+                    {locations.destinations.map(loc => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col justify-end">
@@ -104,6 +158,11 @@ export default function Home() {
                 </button>
               </div>
             </form>
+            {error && (
+              <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100 animate-fade-in">
+                {error}
+              </div>
+            )}
           </div>
 
           {/* Results */}

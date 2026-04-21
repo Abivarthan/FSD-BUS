@@ -3,17 +3,29 @@ const logger = require('../utils/logger');
 
 exports.getRoutes = async (req, res, next) => {
   try {
+    const { origin, destination } = req.query;
     const filters = {};
-    if (req.query.origin) filters.origin = { $regex: req.query.origin, $options: 'i' };
-    if (req.query.destination) filters.destination = { $regex: req.query.destination, $options: 'i' };
     
-    // Default to active routes
+    if (origin) {
+      filters.origin = { $regex: new RegExp(origin, 'i') };
+    }
+    if (destination) {
+      filters.destination = { $regex: new RegExp(destination, 'i') };
+    }
+    
     filters.is_active = true;
+
+    console.log('Searching routes with filters:', filters);
 
     const routes = await Route.find(filters).sort({ name: 1 });
     res.json({ success: true, data: routes });
   } catch (err) {
-    next(err);
+    console.error('getRoutes Error:', err);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to search routes: ' + err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined 
+    });
   }
 };
 

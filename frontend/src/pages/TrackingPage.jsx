@@ -1,241 +1,268 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import api from '../services/api';
+import React, { useState, useEffect } from 'react';
+import VehicleMap from '../components/VehicleMap';
+import { 
+  Bus, 
+  MapPin, 
+  Clock, 
+  Navigation, 
+  AlertTriangle, 
+  Settings, 
+  History,
+  Activity,
+  User,
+  ShieldCheck
+} from 'lucide-react';
+import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
-// Fix marker icons
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-});
-
-// Base styles for DivIcons
-const iconStyles = `
-  width: 40px; 
-  height: 40px; 
-  background: white; 
-  border-radius: 12px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  font-size: 22px; 
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
-  border: 2px solid #2563EB;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-`;
-
-const originIcon = new L.DivIcon({
-  className: 'custom-origin-icon',
-  html: `<div style="width:30px;height:30px;background:#10B981;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:3px solid white;box-shadow:0 0 10px rgba(16,185,129,0.4);">📍</div>`,
-  iconSize: [30, 30],
-  iconAnchor: [15, 15]
-});
-
-const destIcon = new L.DivIcon({
-  className: 'custom-dest-icon',
-  html: `<div style="width:30px;height:30px;background:#EF4444;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:3px solid white;box-shadow:0 0 10px rgba(239,68,68,0.4);">🏁</div>`,
-  iconSize: [30, 30],
-  iconAnchor: [15, 15]
-});
-
-// Map Control Component
-function ChangeView({ center, zoom, isFollowing }) {
-  const map = useMap();
-  useEffect(() => {
-    // Force map to recalculate size when parent container size changes or on mount
-    map.invalidateSize();
-    
-    if (isFollowing && center) {
-        map.setView(center, zoom, { animate: true });
-    }
-  }, [center, zoom, isFollowing, map]);
-  return null;
-}
-
-export default function TrackingPage() {
-  const { id } = useParams();
+const TrackingPage = () => {
   const navigate = useNavigate();
-  const [trackingData, setTrackingData] = useState(null);
-  const [details, setDetails] = useState(null);
+  const [vehicles, setVehicles] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isFollowing, setIsFollowing] = useState(true);
-  const intervalRef = useRef(null);
+  const [geofences, setGeofences] = useState([]);
+  const [showGeofences, setShowGeofences] = useState(true);
+
+  // Mock data for initial demo if API fails
+  const mockVehicles = [
+    { _id: '1', registration_number: 'TN-01-AX-1234', latitude: 13.0827, longitude: 80.2707, speed: 45, status: 'moving', driver: 'Arun Kumar' },
+    { _id: '2', registration_number: 'TN-01-BY-5678', latitude: 11.0168, longitude: 76.9558, speed: 0, status: 'idle', driver: 'Senthil' },
+    { _id: '3', registration_number: 'TN-01-CZ-9012', latitude: 9.9252, longitude: 78.1198, speed: 60, status: 'moving', driver: 'Mani' },
+  ];
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [detRes, trackRes] = await Promise.all([
-          api.get(`/tracking/${id}/details`),
-          api.get(`/tracking/${id}/location`)
-        ]);
-        setDetails(detRes.data.data);
-        setTrackingData(trackRes.data.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+    fetchLiveLocations();
+    const interval = setInterval(fetchLiveLocations, 5000); // Update every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchLiveLocations = async () => {
+    try {
+      const response = await axios.get('/api/tracking/live');
+      if (response.data.success && response.data.data.length > 0) {
+        setVehicles(response.data.data);
+      } else {
+        setVehicles(mockVehicles);
       }
-    };
+    } catch (error) {
+      console.warn('API error, using mock data');
+      setVehicles(mockVehicles);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
-    intervalRef.current = setInterval(async () => {
-      try {
-        const res = await api.get(`/tracking/${id}/location`);
-        setTrackingData(res.data.data);
-      } catch (err) {
-        console.error(err);
+  const handleStartSimulation = async (vehicleId) => {
+    try {
+      console.log('Starting enhanced simulation for vehicle:', vehicleId);
+      const response = await axios.post(`/api/tracking/simulate/${vehicleId}`, {
+        start_location: { name: 'Chennai Central', lat: 13.0827, lng: 80.2707 },
+        end_location: { name: 'Madurai Junction', lat: 9.9252, lng: 78.1198 }
+      });
+      
+      if (response.data.success) {
+        alert('Real-time Simulation Engine Started: ' + response.data.data.trip_id);
       }
-    }, 3000);
+    } catch (error) {
+      console.error('Simulation failed:', error.response?.data?.message || error.message);
+      alert('Simulation failed: ' + (error.response?.data?.message || 'Check connection'));
+    }
+  };
 
-    return () => clearInterval(intervalRef.current);
-  }, [id]);
-
-  const location = trackingData?.location;
-  const routePath = trackingData?.route?.waypoints?.map(w => [w.lat, w.lng]) || [];
-  const currentPos = location ? [location.lat, location.lng] : [13.1986, 77.7066];
-
-  const dynamicBusIcon = useMemo(() => {
-    return new L.DivIcon({
-      className: 'custom-bus-icon',
-      html: `
-        <div style="${iconStyles} transform: rotate(${location?.heading || 0}deg);">
-          🚌
-        </div>
-      `,
-      iconSize: [40, 40],
-      iconAnchor: [20, 20]
-    });
-  }, [location?.heading]);
-
-  if (loading) return (
-    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-        <p className="font-bold tracking-widest text-xs uppercase opacity-60">Connecting GPS...</p>
-      </div>
-    </div>
-  );
+  const stats = [
+    { label: 'Active Vehicles', value: vehicles.length, icon: Bus, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { label: 'Moving', value: vehicles.filter(v => v.speed > 0).length, icon: Navigation, color: 'text-green-500', bg: 'bg-green-50' },
+    { label: 'Alerts', value: 2, icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-50' },
+    { label: 'On Time', value: '94%', icon: Clock, color: 'text-purple-500', bg: 'bg-purple-50' },
+  ];
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
-      {/* Header */}
-      <div className="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between z-20">
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="p-2 bg-gray-800 rounded-xl text-gray-400 hover:text-white transition-all">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-          </button>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Header Area */}
+      <div className="bg-white border-b px-8 py-6">
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-white font-display font-bold text-lg">{trackingData?.route?.name || 'Live Route'}</h1>
-            <p className="text-gray-500 text-xs">{trackingData?.route?.origin} → {trackingData?.route?.destination}</p>
+            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Vehicle Real-time Tracking</h1>
+            <p className="text-gray-500 mt-1 flex items-center gap-2">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              </span>
+              Tamil Nadu State Fleet Operations • Live View
+            </p>
           </div>
+          
         </div>
-        <button 
-          onClick={() => setIsFollowing(!isFollowing)}
-          className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isFollowing ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-gray-800 text-gray-400'}`}
-        >
-          {isFollowing ? '📡 Locked on Bus' : '🔓 Free Move'}
-        </button>
       </div>
 
-      <div className="flex-1 flex relative">
-        <div className="flex-1 relative z-10 h-full">
-          <MapContainer center={currentPos} zoom={13} style={{ height: '100%', width: '100%' }} zoomControl={false}>
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      {/* Stats Section */}
+      <div className="grid grid-cols-4 gap-6 px-8 py-8">
+        {stats.map((stat, idx) => (
+          <motion.div 
+            key={idx}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.1 }}
+            className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-5 hover:shadow-md transition-shadow"
+          >
+            <div className={`${stat.bg} p-4 rounded-xl`}>
+              <stat.icon className={stat.color} size={28} />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">{stat.label}</p>
+              <h3 className="text-2xl font-bold text-gray-900">{stat.value}</h3>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Main Map & Detail Section */}
+      <div className="flex-1 px-8 pb-8 flex gap-8">
+        {/* Sidebar */}
+        <div className="w-1/4 flex flex-col gap-6">
+          <div className="bg-white rounded-2xl shadow-sm border p-5 flex-1 overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-gray-800">Fleet List</h2>
+              <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600 font-bold uppercase tracking-wider">Tamil Nadu</span>
+            </div>
             
-            {routePath.length > 0 && (
-              <>
-                {/* Background "Road" Effect */}
-                <Polyline positions={routePath} pathOptions={{ color: '#1E293B', weight: 10, opacity: 0.6, lineJoin: 'round' }} />
-                {/* Active Route Line */}
-                <Polyline positions={routePath} pathOptions={{ color: '#3B82F6', weight: 3, opacity: 0.8, dashArray: '10, 15', lineJoin: 'round' }} />
-                
-                <Marker position={routePath[0]} icon={originIcon} />
-                <Marker position={routePath[routePath.length - 1]} icon={destIcon} />
-              </>
-            )}
+            <div className="relative mb-6">
+              <input 
+                type="text" 
+                placeholder="Search registration number..." 
+                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+              />
+              <Bus className="absolute left-3 top-3 text-gray-400" size={16} />
+            </div>
 
-            {location && (
-              <Marker position={[location.lat, location.lng]} icon={dynamicBusIcon}>
-                <Popup className="custom-popup">
-                  <div className="text-center font-sans p-1">
-                    <p className="font-bold text-sm text-gray-900">🚌 {details?.vehicle?.model}</p>
-                    <p className="text-xs text-primary font-bold mt-1">{location.speed} km/h</p>
+            <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+              {vehicles.map((v) => (
+                <div 
+                  key={v._id}
+                  onClick={() => setSelectedVehicle(v)}
+                  className={`p-4 rounded-xl border transition-all cursor-pointer group ${
+                    selectedVehicle?._id === v._id 
+                    ? 'border-blue-500 bg-blue-50 shadow-sm' 
+                    : 'border-gray-100 hover:border-blue-200 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex justify-between items-start">
+                    <span className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{v.registration_number}</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                      v.speed > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                    }`}>
+                      {v.speed > 0 ? 'Moving' : 'Idle'}
+                    </span>
                   </div>
-                </Popup>
-              </Marker>
-            )}
-
-            <ChangeView center={currentPos} zoom={14} isFollowing={isFollowing} />
-          </MapContainer>
-
-          {/* Speed Overlay */}
-          {location && (
-            <div className="absolute top-6 left-6 z-[1000] bg-white p-4 rounded-2xl shadow-2xl border border-gray-100 flex items-center gap-4">
-               <div className="text-center px-2">
-                 <p className="text-2xl font-display font-black text-gray-900">{location.speed}</p>
-                 <p className="text-[8px] text-gray-400 font-bold uppercase tracking-widest">km/h</p>
-               </div>
-               <div className="w-px h-8 bg-gray-200" />
-               <div className="text-center px-2">
-                 <p className="text-2xl font-display font-black text-primary">{location.eta_minutes}</p>
-                 <p className="text-[8px] text-gray-400 font-bold uppercase tracking-widest">min ETA</p>
-               </div>
-            </div>
-          )}
-
-          {/* Status Badge */}
-          {location && (
-            <div className="absolute top-6 right-6 z-[1000]">
-               <div className="bg-white px-5 py-2.5 rounded-2xl shadow-2xl border border-gray-100 flex items-center gap-2">
-                 <span className="relative flex h-2.5 w-2.5">
-                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                 </span>
-                 <span className="text-xs font-bold text-gray-600 uppercase tracking-widest">In Transit</span>
-               </div>
-            </div>
-          )}
-        </div>
-
-        {/* Info Panel */}
-        <div className="w-[360px] bg-gray-900 border-l border-gray-800 p-6 hidden lg:block overflow-y-auto">
-          <div className="space-y-6">
-            <div className="bg-gray-800 p-5 rounded-2xl">
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Trip Progress</p>
-              <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-                <div className="h-full bg-primary" style={{ width: `${location?.progress_percent}%` }} />
-              </div>
-              <p className="text-white text-right mt-2 font-bold text-xs">{location?.progress_percent}% Completed</p>
-            </div>
-
-            {details?.vehicle && (
-              <div className="bg-gray-800 p-5 rounded-2xl">
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Bus Info</p>
-                <h3 className="text-white font-bold">{details.vehicle.model}</h3>
-                <p className="text-primary text-xs font-mono mt-1">{details.vehicle.registration_number}</p>
-              </div>
-            )}
-
-            {details?.driver && (
-              <div className="bg-gray-800 p-5 rounded-2xl">
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Your Driver</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-sm">
-                    {details.driver.name?.charAt(0)}
+                  <div className="mt-3 flex items-center gap-3 text-sm text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <User size={14} className="text-gray-400" />
+                      <span>{v.driver || 'Driver'}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-white text-sm font-bold">{details.driver.name}</h3>
-                    <p className="text-gray-500 text-[10px]">{details.driver.rating} ★ Rating</p>
+                  <div className="mt-2 text-[11px] text-gray-400 flex items-center gap-2">
+                    <MapPin size={12} />
+                    <span>{v.latitude.toFixed(4)}, {v.longitude.toFixed(4)}</span>
                   </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
+
+          {/* Quick Actions */}
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 text-white shadow-xl">
+            <h3 className="text-sm font-bold opacity-60 uppercase tracking-widest mb-4">Security Center</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Geofencing Alerts</span>
+                <div 
+                  onClick={() => setShowGeofences(!showGeofences)}
+                  className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${showGeofences ? 'bg-blue-500' : 'bg-gray-600'}`}
+                >
+                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${showGeofences ? 'left-6' : 'left-1'}`}></div>
+                </div>
+              </div>
+              <button className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2.5 rounded-lg text-sm font-bold border border-red-500/20 transition-all flex items-center justify-center gap-2">
+                <ShieldCheck size={16} />
+                Emergency Lockdown
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Map Area */}
+        <div className="flex-1 relative">
+           <VehicleMap 
+              vehicles={vehicles} 
+              selectedVehicle={selectedVehicle}
+              center={selectedVehicle ? [selectedVehicle.latitude, selectedVehicle.longitude] : [11.1271, 78.6569]}
+              zoom={selectedVehicle ? 14 : 7}
+              showGeofences={showGeofences}
+           />
+           
+           {/* Detailed Card for Selected Vehicle */}
+           <AnimatePresence>
+             {selectedVehicle && (
+               <motion.div 
+                 initial={{ opacity: 0, x: 100 }}
+                 animate={{ opacity: 1, x: 0 }}
+                 exit={{ opacity: 0, x: 100 }}
+                 className="absolute top-6 right-6 w-80 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6 z-[1000]"
+               >
+                 <div className="flex justify-between items-start mb-6">
+                   <div>
+                     <h3 className="text-xl font-black text-gray-900">{selectedVehicle.registration_number}</h3>
+                     <p className="text-xs text-blue-600 font-bold uppercase tracking-wider">Real-time Telemetry</p>
+                   </div>
+                   <button onClick={() => setSelectedVehicle(null)} className="text-gray-400 hover:text-gray-600">
+                     <AlertTriangle size={20} />
+                   </button>
+                 </div>
+
+                 <div className="space-y-4">
+                   <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                     <div className="flex items-center gap-2 text-gray-500 font-medium">
+                       <Navigation size={16} />
+                       <span>Speed</span>
+                     </div>
+                     <span className="font-bold text-gray-900">{selectedVehicle.speed} km/h</span>
+                   </div>
+                   <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                     <div className="flex items-center gap-2 text-gray-500 font-medium">
+                       <User size={16} />
+                       <span>Driver</span>
+                     </div>
+                     <span className="font-bold text-gray-900">{selectedVehicle.driver}</span>
+                   </div>
+                   <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                     <div className="flex items-center gap-2 text-gray-500 font-medium">
+                       <Clock size={16} />
+                       <span>Last Update</span>
+                     </div>
+                     <span className="font-bold text-gray-900 text-xs text-green-600">Just now</span>
+                   </div>
+                 </div>
+
+                 <div className="flex gap-2 mt-6">
+                    <button 
+                      onClick={() => handleStartSimulation(selectedVehicle?._id)}
+                      className="flex-1 bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 shadow-lg shadow-green-200 transition-all flex items-center justify-center gap-2"
+                    >
+                      <Activity size={18} />
+                      Start Simulation
+                    </button>
+                    <button className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">
+                      Analysis
+                    </button>
+                 </div>
+               </motion.div>
+             )}
+           </AnimatePresence>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default TrackingPage;

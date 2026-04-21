@@ -3,8 +3,15 @@ const router = express.Router();
 const ctrl = require('../controllers/trackingController');
 const auth = require('../middleware/authMiddleware');
 
-router.post('/:bookingId/start', auth, ctrl.startTracking);
-router.get('/:bookingId/location', auth, ctrl.getLocation);
-router.get('/:bookingId/details', auth, ctrl.getBookingTrackingDetails);
+// Live Tracking & Simulation
+router.get('/live', auth, ctrl.getAllLiveLocations);
+router.post('/simulate/:vehicle_id', auth, ctrl.startEnhancedSimulation);
+router.post('/start-simulation', auth, ctrl.startEnhancedSimulation);
+
+// Trip Playback
+router.get('/playback/:tripId', auth, ctrl.getTripPlayback);
+
+// Analytics & Reports
+router.get('/reports/optimization', auth, ctrl.getOptimizationReports);
 
 module.exports = router;
