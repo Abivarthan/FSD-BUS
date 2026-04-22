@@ -11,15 +11,21 @@ if (!fs.existsSync('logs')) fs.mkdirSync('logs');
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-  logger.info(`🚀 Fleet Management API running on port ${PORT}`);
+const http = require('http');
+const socketService = require('./src/services/socketService');
+
+const httpServer = http.createServer(app);
+socketService.init(httpServer);
+
+httpServer.listen(PORT, () => {
+  logger.info(`🚀 Fleet Management API with WebSockets running on port ${PORT}`);
   logger.info(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received. Shutting down gracefully...');
-  server.close(() => {
+  httpServer.close(() => {
     logger.info('Server closed.');
     process.exit(0);
   });
@@ -27,5 +33,5 @@ process.on('SIGTERM', () => {
 
 process.on('unhandledRejection', (err) => {
   logger.error('Unhandled rejection:', err);
-  server.close(() => process.exit(1));
+  httpServer.close(() => process.exit(1));
 });

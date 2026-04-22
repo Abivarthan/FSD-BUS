@@ -12,7 +12,7 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../services/api';
 
 const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
   const [playbackData, setPlaybackData] = useState(null);
@@ -47,7 +47,7 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
 
   const fetchPlaybackData = async () => {
     try {
-      const response = await axios.get(`/api/tracking/playback/${tripId}`);
+      const response = await api.get(`/tracking/playback/${tripId}`);
       if (response.data.success) {
         setPlaybackData(response.data.data);
       } else {

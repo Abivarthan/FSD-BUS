@@ -12,7 +12,8 @@ import {
   User,
   ShieldCheck
 } from 'lucide-react';
-import axios from 'axios';
+import api from '../services/api';
+import socket from '../services/socket';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,23 +24,54 @@ const TrackingPage = () => {
   const [loading, setLoading] = useState(true);
   const [geofences, setGeofences] = useState([]);
   const [showGeofences, setShowGeofences] = useState(true);
+  const [routePath, setRoutePath] = useState([]);
+  const [isDeviceTracking, setIsDeviceTracking] = useState(false);
+  const [trackingWatchId, setTrackingWatchId] = useState(null);
 
   // Mock data for initial demo if API fails
   const mockVehicles = [
-    { _id: '1', registration_number: 'TN-01-AX-1234', latitude: 13.0827, longitude: 80.2707, speed: 45, status: 'moving', driver: 'Arun Kumar' },
-    { _id: '2', registration_number: 'TN-01-BY-5678', latitude: 11.0168, longitude: 76.9558, speed: 0, status: 'idle', driver: 'Senthil' },
-    { _id: '3', registration_number: 'TN-01-CZ-9012', latitude: 9.9252, longitude: 78.1198, speed: 60, status: 'moving', driver: 'Mani' },
+    { _id: '69c3f23467e1f48c2d10b17a', registration_number: 'KA-01-BK-9999', latitude: 13.0827, longitude: 80.2707, speed: 45, status: 'moving', driver: 'Arun Kumar' },
+    { _id: '69c3f23467e1f48c2d10b180', registration_number: 'MH-01-XY-1234', latitude: 11.0168, longitude: 76.9558, speed: 0, status: 'idle', driver: 'Senthil' },
+    { _id: '69c3f23467e1f48c2d10b186', registration_number: 'DL-01-HT-5678', latitude: 9.9252, longitude: 78.1198, speed: 60, status: 'moving', driver: 'Mani' },
   ];
 
   useEffect(() => {
     fetchLiveLocations();
-    const interval = setInterval(fetchLiveLocations, 5000); // Update every 5 seconds
-    return () => clearInterval(interval);
+    
+    // Web Socket Live Listener
+    socket.on('vehicleLocation', (data) => {
+      console.log('Real-time GPS update received:', data);
+      setVehicles(prev => {
+        const index = prev.findIndex(v => (v.id || v._id) === data.vehicle_id);
+        if (index !== -1) {
+          const updated = [...prev];
+          updated[index] = { ...updated[index], ...data };
+          return updated;
+        } else {
+          // Add new vehicle if it's from a live source but not in list
+          return [...prev, {
+            _id: data.vehicle_id,
+            registration_number: data.registration_number || 'LIVE-UNIT',
+            latitude: data.latitude,
+            longitude: data.longitude,
+            speed: data.speed,
+            status: 'moving',
+            driver: data.driver || 'Live Driver'
+          }];
+        }
+      });
+    });
+
+    const interval = setInterval(fetchLiveLocations, 30000); // Polling as fallback (slower)
+    return () => {
+      socket.off('vehicleLocation');
+      clearInterval(interval);
+    };
   }, []);
 
   const fetchLiveLocations = async () => {
     try {
-      const response = await axios.get('/api/tracking/live');
+      const response = await api.get('/tracking/live');
       if (response.data.success && response.data.data.length > 0) {
         setVehicles(response.data.data);
       } else {
@@ -56,17 +88,59 @@ const TrackingPage = () => {
   const handleStartSimulation = async (vehicleId) => {
     try {
       console.log('Starting enhanced simulation for vehicle:', vehicleId);
-      const response = await axios.post(`/api/tracking/simulate/${vehicleId}`, {
+      const response = await api.post(`/tracking/simulate/${vehicleId}`, {
         start_location: { name: 'Chennai Central', lat: 13.0827, lng: 80.2707 },
         end_location: { name: 'Madurai Junction', lat: 9.9252, lng: 78.1198 }
       });
       
       if (response.data.success) {
+        setRoutePath([
+          [13.0827, 80.2707],
+          [12.6767, 79.9120], // Chengalpattu
+          [11.9416, 79.4861], // Villupuram
+          [10.7905, 78.7047], // Trichy
+          [9.9252, 78.1198]   // Madurai
+        ]);
         alert('Real-time Simulation Engine Started: ' + response.data.data.trip_id);
       }
     } catch (error) {
       console.error('Simulation failed:', error.response?.data?.message || error.message);
       alert('Simulation failed: ' + (error.response?.data?.message || 'Check connection'));
+    }
+  };
+
+  const toggleDeviceTracking = (vehicleId) => {
+    if (isDeviceTracking) {
+      if (trackingWatchId) navigator.geolocation.clearWatch(trackingWatchId);
+      setTrackingWatchId(null);
+      setIsDeviceTracking(false);
+    } else {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by this browser.");
+        return;
+      }
+      
+      const watchId = navigator.geolocation.watchPosition(
+        async (position) => {
+          try {
+            await api.post('/tracking/update', {
+              vehicle_id: vehicleId,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              speed: position.coords.speed || 0,
+              heading: position.coords.heading || 0
+            });
+          } catch (err) {
+            console.error('Failed to send GPS update:', err);
+          }
+        },
+        (err) => console.error('GPS Error:', err),
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+      );
+      
+      setTrackingWatchId(watchId);
+      setIsDeviceTracking(true);
+      alert("Device GPS active. You are now the 'Real Driver' for this vehicle.");
     }
   };
 
@@ -154,11 +228,16 @@ const TrackingPage = () => {
                     }`}>
                       {v.speed > 0 ? 'Moving' : 'Idle'}
                     </span>
+                    {!mockVehicles.some(mv => mv._id === v._id) && (
+                      <span className="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
+                        LIVE GPS
+                      </span>
+                    )}
                   </div>
                   <div className="mt-3 flex items-center gap-3 text-sm text-gray-500">
                     <div className="flex items-center gap-1">
                       <User size={14} className="text-gray-400" />
-                      <span>{v.driver || 'Driver'}</span>
+                      <span className="font-bold text-gray-700">{v.driver || 'Driver'}</span>
                     </div>
                   </div>
                   <div className="mt-2 text-[11px] text-gray-400 flex items-center gap-2">
@@ -183,9 +262,14 @@ const TrackingPage = () => {
                   <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${showGeofences ? 'left-6' : 'left-1'}`}></div>
                 </div>
               </div>
-              <button className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2.5 rounded-lg text-sm font-bold border border-red-500/20 transition-all flex items-center justify-center gap-2">
+              <button 
+                onClick={() => toggleDeviceTracking(selectedVehicle?._id || vehicles[0]?._id)}
+                className={`w-full py-2.5 rounded-lg text-sm font-bold border transition-all flex items-center justify-center gap-2 ${
+                  isDeviceTracking ? 'bg-green-500 text-white border-green-600' : 'bg-red-500/10 hover:bg-red-500/20 text-red-500 border-red-500/20'
+                }`}
+              >
                 <ShieldCheck size={16} />
-                Emergency Lockdown
+                {isDeviceTracking ? 'Tracking My Device' : 'Enable My GPS as Driver'}
               </button>
             </div>
           </div>
@@ -196,6 +280,7 @@ const TrackingPage = () => {
            <VehicleMap 
               vehicles={vehicles} 
               selectedVehicle={selectedVehicle}
+              routePath={routePath}
               center={selectedVehicle ? [selectedVehicle.latitude, selectedVehicle.longitude] : [11.1271, 78.6569]}
               zoom={selectedVehicle ? 14 : 7}
               showGeofences={showGeofences}
@@ -252,7 +337,10 @@ const TrackingPage = () => {
                       <Activity size={18} />
                       Start Simulation
                     </button>
-                    <button className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">
+                    <button 
+                      onClick={() => navigate('/reports/optimization')}
+                      className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all"
+                    >
                       Analysis
                     </button>
                  </div>

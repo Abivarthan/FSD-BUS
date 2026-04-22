@@ -34,11 +34,55 @@ class GpsTrackingService {
             _id: '$vehicle_id',
             latest: { $first: '$$ROOT' }
           }
-        }
+        },
+        {
+          $lookup: {
+            from: 'vehicles',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'vehicle'
+          }
+        },
+        { $unwind: { path: '$vehicle', preserveNullAndEmptyArrays: true } },
+        {
+          $lookup: {
+            from: 'vehicleassignments',
+            localField: '_id',
+            foreignField: 'vehicle_id',
+            pipeline: [
+              { $match: { is_active: true } },
+              { $limit: 1 }
+            ],
+            as: 'assignment'
+          }
+        },
+        { $unwind: { path: '$assignment', preserveNullAndEmptyArrays: true } },
+        {
+          $lookup: {
+            from: 'driverprofiles',
+            localField: 'assignment.driver_id',
+            foreignField: '_id',
+            as: 'driverProfile'
+          }
+        },
+        { $unwind: { path: '$driverProfile', preserveNullAndEmptyArrays: true } },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'driverProfile.user_id',
+            foreignField: '_id',
+            as: 'driverUser'
+          }
+        },
+        { $unwind: { path: '$driverUser', preserveNullAndEmptyArrays: true } }
       ]);
       
       const realPositions = latestPositions
-        .map(p => p.latest)
+        .map(p => ({
+          ...p.latest,
+          registration_number: p.vehicle?.registration_number || 'UNKNOWN',
+          driver: p.driverUser?.name || 'Assigned Driver'
+        }))
         .filter(p => !simulatedPositions.some(s => s.vehicle_id.toString() === p.vehicle_id.toString()));
 
       return [...simulatedPositions, ...realPositions];
@@ -71,9 +115,12 @@ class GpsTrackingService {
   }
 
   async advanceSimulation() {
+    const socketService = require('./socketService');
+    
     for (const [tripId, session] of simulatedSessions.entries()) {
       session.currentIndex = (session.currentIndex + 1) % session.path.length;
       const nextCoord = session.path[session.currentIndex];
+      
       session.lastPos = {
         ...session.lastPos,
         latitude: nextCoord[0],
@@ -81,6 +128,15 @@ class GpsTrackingService {
         timestamp: new Date(),
         speed: 40 + Math.random() * 10
       };
+
+      // Emit live update via WebSockets to force frontend movement
+      socketService.emitLocationUpdate({
+        vehicle_id: session.vehicleId,
+        latitude: nextCoord[0],
+        longitude: nextCoord[1],
+        speed: session.lastPos.speed,
+        timestamp: session.lastPos.timestamp
+      });
 
       // Auto-save to GpsLog to keep history for playback
       await this.processGpsUpdate({

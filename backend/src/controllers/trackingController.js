@@ -21,6 +21,35 @@ const fetchRoutePath = async (start, end) => {
   }
 };
 
+const socketService = require('../services/socketService');
+
+exports.updateLocation = async (req, res, next) => {
+  try {
+    const { vehicle_id, latitude, longitude, speed, heading, trip_id } = req.body;
+    const log = await gpsService.processGpsUpdate({
+      vehicle_id,
+      latitude,
+      longitude,
+      speed,
+      heading,
+      trip_id
+    });
+
+    // Emit live update via WebSockets
+    socketService.emitLocationUpdate({
+      vehicle_id,
+      latitude,
+      longitude,
+      speed,
+      timestamp: log.timestamp
+    });
+
+    res.json({ success: true, data: log });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.getAllLiveLocations = async (req, res, next) => {
   try {
     const locations = await gpsService.getLivePositions();
@@ -32,12 +61,41 @@ exports.getAllLiveLocations = async (req, res, next) => {
 
 exports.startEnhancedSimulation = async (req, res, next) => {
   try {
-    const { vehicle_id } = req.params;
+    let { vehicle_id } = req.params;
     const { start_location, end_location } = req.body;
 
-    const vehicle = await Vehicle.findById(vehicle_id);
-    if (!vehicle) return res.status(404).json({ success: false, message: 'Vehicle not found' });
+    let vehicle;
+    
+    // 1. Auto-create vehicle if not found or if ID is a simple mock ID
+    if (vehicle_id.length < 10) { // Simple check for mock IDs
+       vehicle = await Vehicle.findOne({ registration_number: `TN-AUTO-${vehicle_id}` });
+       if (!vehicle) {
+         vehicle = await Vehicle.create({
+           vehicle_type: 'bus',
+           registration_number: `TN-AUTO-${vehicle_id}`,
+           model: 'Auto-Simulated Bus',
+           capacity: 50,
+           fuel_type: 'diesel',
+           status: 'active'
+         });
+       }
+       vehicle_id = vehicle._id;
+    } else {
+      vehicle = await Vehicle.findById(vehicle_id);
+      if (!vehicle) {
+        // Create new if not found even with valid ObjectId format
+        vehicle = await Vehicle.create({
+          vehicle_type: 'bus',
+          registration_number: `TN-NEW-${Date.now().toString().slice(-4)}`,
+          model: 'On-the-fly Bus',
+          capacity: 40,
+          fuel_type: 'diesel'
+        });
+        vehicle_id = vehicle._id;
+      }
+    }
 
+    // 2. Auto-create or find active trip
     let trip = await Trip.findOne({ vehicle_id, status: 'ongoing' });
     
     if (!trip) {
@@ -54,16 +112,19 @@ exports.startEnhancedSimulation = async (req, res, next) => {
       await trip.save();
     }
 
+    // 3. Ensure route path exists
     if (!trip.route_path || trip.route_path.length < 2) {
       trip.route_path = await fetchRoutePath(trip.start_location, trip.end_location);
       await trip.save();
     }
 
+    // 4. Force Start Simulation Engine
     await gpsService.startSimulatingTrip(trip._id);
     
     res.json({ 
       success: true, 
-      data: { trip_id: trip._id, vehicle_id, route_length: trip.route_path.length }
+      message: 'Simulation engine forced to START',
+      data: { trip_id: trip._id, vehicle_id, registration_number: vehicle.registration_number }
     });
   } catch (err) {
     next(err);

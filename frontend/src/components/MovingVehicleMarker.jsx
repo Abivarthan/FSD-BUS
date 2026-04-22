@@ -4,12 +4,23 @@ import L from 'leaflet';
 import { Navigation, MapPin } from 'lucide-react';
 
 // Custom Bus Icon with rotation support
-const createBusIcon = (heading = 0) => {
+const createBusIcon = (heading = 0, isMoving = false) => {
   return new L.DivIcon({
     html: `
-      <div style="transform: rotate(${heading}deg); transition: transform 0.5s ease-in-out;">
-        <img src="https://cdn-icons-png.flaticon.com/512/3448/3448339.png" style="width: 40px; height: 40px;" />
+      <div style="transform: rotate(${heading}deg); transition: transform 0.5s ease-in-out; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+        <div class="bus-moving" style="font-size: 32px;">
+          🚌
+        </div>
       </div>
+      <style>
+        @keyframes bob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        .bus-moving {
+          animation: bob 0.6s infinite ease-in-out;
+        }
+      </style>
     `,
     className: 'custom-bus-icon',
     iconSize: [40, 40],
@@ -61,7 +72,7 @@ const MovingVehicleMarker = ({ vehicle, autoFollow = false }) => {
   }, [vehicle.latitude, vehicle.longitude, autoFollow, map]);
 
   return (
-    <Marker position={currentPos} icon={createBusIcon(heading)}>
+    <Marker position={currentPos} icon={createBusIcon(heading, true)}>
       <Popup className="premium-popup">
         <div className="p-3 w-64 bg-white rounded-xl">
            <div className="flex items-center gap-3 border-b pb-2 mb-3">

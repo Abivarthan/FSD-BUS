@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area
 } from 'recharts';
@@ -18,7 +18,7 @@ const OptimizationReports = () => {
 
   const fetchReports = async () => {
     try {
-      const response = await axios.get('/api/tracking/reports/optimization');
+      const response = await api.get('/tracking/reports/optimization');
       if (response.data.success) {
         setReports(response.data.data);
       }

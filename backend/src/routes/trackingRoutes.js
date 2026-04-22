@@ -5,6 +5,8 @@ const auth = require('../middleware/authMiddleware');
 
 // Live Tracking & Simulation
 router.get('/live', auth, ctrl.getAllLiveLocations);
+router.post('/update', auth, ctrl.updateLocation);
+router.post('/gps/update', auth, ctrl.updateLocation);
 router.post('/simulate/:vehicle_id', auth, ctrl.startEnhancedSimulation);
 router.post('/start-simulation', auth, ctrl.startEnhancedSimulation);
 
