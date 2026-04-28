@@ -39,8 +39,8 @@ function MaintenanceModal({ vehicles, onClose, onSave }) {
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="flex items-center justify-between p-6 border-b border-[#E2E8F0]">
-          <h2 className="text-lg font-display font-bold text-gray-900">Add Maintenance Record</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors">
+          <h2 className="text-lg font-display font-bold text-white">Add Maintenance Record</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -122,13 +122,13 @@ function MaintenanceModal({ vehicles, onClose, onSave }) {
 const BillViewer = ({ url, onClose }) => (
   <div className="modal-overlay" style={{ zIndex: 100 }} onClick={onClose}>
     <div className="max-w-4xl w-full p-4 flex flex-col items-center">
-      <button className="self-end mb-2 text-gray-900 bg-black/40 rounded-full p-2 hover:bg-gray-900/40 transition-colors" onClick={onClose}>
+      <button className="self-end mb-2 text-white bg-black/40 rounded-full p-2 hover:bg-gray-900/40 transition-colors" onClick={onClose}>
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
       </button>
       {url.endsWith('.pdf') ? (
-        <iframe src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="w-full h-[80vh] bg-white rounded-lg shadow-2xl" />
+        <iframe src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="w-full h-[80vh] bg-surface-card rounded-lg shadow-2xl" />
       ) : (
-        <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-white" alt="Bill" />
+        <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-surface-card" alt="Bill" />
       )}
     </div>
   </div>
@@ -171,7 +171,7 @@ export default function Maintenance() {
         const due = new Date(v);
         const now = new Date();
         const diff = (due - now) / (1000 * 60 * 60 * 24);
-        const cls = diff < 0 ? 'text-accent-red font-bold' : diff < 7 ? 'text-accent-amber' : 'text-gray-500';
+        const cls = diff < 0 ? 'text-accent-red font-bold' : diff < 7 ? 'text-accent-amber' : 'text-slate-500';
         return <span className={cls}>{due.toLocaleDateString('en-IN')}</span>;
       }
     },
@@ -184,7 +184,7 @@ export default function Maintenance() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </button>
-      ) : <span className="text-gray-700">—</span>
+      ) : <span className="text-slate-400">—</span>
     }
   ];
 
@@ -193,7 +193,7 @@ export default function Maintenance() {
       <div className="page-header">
         <div>
           <h1 className="page-title">Maintenance</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{records.length} records</p>
+          <p className="text-sm text-slate-500 mt-0.5">{records.length} records</p>
         </div>
         <button className="btn-primary" onClick={() => setShowModal(true)}>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -211,7 +211,7 @@ export default function Maintenance() {
           <option value="in_progress">In Progress</option>
           <option value="completed">Completed</option>
         </select>
-        <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
+        <label className="flex items-center gap-2 text-sm text-slate-500 cursor-pointer">
           <input type="checkbox" className="rounded"
             checked={filter.overdue === 'true'}
             onChange={e => setFilter(p => ({ ...p, overdue: e.target.checked ? 'true' : '' }))}

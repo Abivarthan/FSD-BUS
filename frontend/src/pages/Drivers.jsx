@@ -32,8 +32,8 @@ function DriverModal({ onClose, onSave }) {
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="flex items-center justify-between p-6 border-b border-[#E2E8F0]">
-          <h2 className="text-lg font-display font-bold text-gray-900">Add Driver</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors">
+          <h2 className="text-lg font-display font-bold text-white">Add Driver</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -88,7 +88,7 @@ function DriverModal({ onClose, onSave }) {
                 onChange={e => f('address', e.target.value)} />
             </div>
           </div>
-          <p className="text-xs text-gray-500 bg-gray-50 p-2 rounded">Credentials will be generated automatically. Note: Driver login module is disabled.</p>
+          <p className="text-xs text-slate-500 bg-surface-hover p-2 rounded">Credentials will be generated automatically. Note: Driver login module is disabled.</p>
           {error && <p className="text-accent-red text-sm">{error}</p>}
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="btn-secondary flex-1 justify-center">Cancel</button>
@@ -123,8 +123,8 @@ export default function Drivers() {
       key: 'name', label: 'Driver',
       render: (v, row) => (
         <div>
-          <div className="font-bold text-gray-900">{v}</div>
-          <div className="text-[10px] text-gray-500 uppercase font-medium">{row.email}</div>
+          <div className="font-bold text-white">{v}</div>
+          <div className="text-[10px] text-slate-500 uppercase font-medium">{row.email}</div>
         </div>
       )
     },
@@ -137,11 +137,11 @@ export default function Drivers() {
         const expiry = new Date(v);
         const now = new Date();
         const diff = (expiry - now) / (1000 * 60 * 60 * 24);
-        const cls = diff < 0 ? 'text-accent-red font-bold' : diff < 30 ? 'text-accent-amber' : 'text-gray-500';
+        const cls = diff < 0 ? 'text-accent-red font-bold' : diff < 30 ? 'text-accent-amber' : 'text-slate-500';
         return <span className={`text-xs ${cls}`}>{new Date(v).toLocaleDateString('en-IN')}</span>;
       }
     },
-    { key: 'assigned_vehicle', label: 'Vehicle', render: v => v ? <span className="font-mono text-primary-light text-xs font-bold">{v}</span> : <span className="text-gray-700">—</span> },
+    { key: 'assigned_vehicle', label: 'Vehicle', render: v => v ? <span className="font-mono text-primary-light text-xs font-bold">{v}</span> : <span className="text-slate-400">—</span> },
     { key: 'status', label: 'Status', render: v => <span className={STATUS_BADGE[v] || 'badge-gray'}>{v}</span> },
   ];
 
@@ -150,7 +150,7 @@ export default function Drivers() {
       <div className="page-header">
         <div>
           <h1 className="page-title">Drivers Management</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{drivers.length} registered personnel</p>
+          <p className="text-sm text-slate-500 mt-0.5">{drivers.length} registered personnel</p>
         </div>
         <button className="btn-primary" onClick={() => setShowModal(true)}>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

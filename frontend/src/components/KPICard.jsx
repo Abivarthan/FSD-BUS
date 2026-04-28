@@ -11,7 +11,7 @@ export default function KPICard({ title, value, subtitle, icon, color = 'blue', 
   return (
     <div className="card p-5 flex flex-col gap-4 hover:border-[#374151] transition-colors group">
       <div className="flex items-start justify-between">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{title}</p>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{title}</p>
         {icon && (
           <div className={`w-8 h-8 rounded-lg border flex items-center justify-center ${colorMap[color]}`}>
             {icon}
@@ -19,9 +19,9 @@ export default function KPICard({ title, value, subtitle, icon, color = 'blue', 
         )}
       </div>
       <div>
-        <p className="text-2xl font-display font-bold text-gray-900">{value ?? '—'}</p>
+        <p className="text-2xl font-display font-bold text-white">{value ?? '—'}</p>
         {subtitle && (
-          <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+          <p className="text-xs text-slate-500 mt-1">{subtitle}</p>
         )}
       </div>
       {trend && (

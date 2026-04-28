@@ -54,10 +54,10 @@ export default function CustomerDashboard() {
       {/* Welcome Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-display font-black text-gray-900 mb-1">
+          <h1 className="text-4xl font-display font-black text-white mb-1">
             Welcome back, <span className="text-primary">{user?.name?.split(' ')[0]}</span> 👋
           </h1>
-          <p className="text-gray-500 text-lg">Manage your trips and track live locations</p>
+          <p className="text-slate-500 text-lg">Manage your trips and track live locations</p>
         </div>
         <Link to="/" className="btn-primary px-8 py-3 rounded-2xl shadow-xl shadow-primary/20 font-bold flex items-center gap-2">
           <span>+</span> Book a Trip
@@ -72,11 +72,11 @@ export default function CustomerDashboard() {
           { label: 'Completed', value: stats.completed, icon: '✅', gradient: 'from-purple-500 to-purple-600' },
           { label: 'Cancelled', value: stats.cancelled, icon: '❌', gradient: 'from-red-400 to-red-500' },
         ].map((stat) => (
-          <div key={stat.label} className="relative bg-white p-6 rounded-[28px] border border-gray-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
+          <div key={stat.label} className="relative bg-surface-card p-6 rounded-[28px] border border-surface-border shadow-sm hover:shadow-xl transition-all group overflow-hidden">
             <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${stat.gradient} opacity-5 rounded-full translate-x-4 -translate-y-4 group-hover:scale-150 transition-transform duration-500`} />
             <div className="relative z-10">
               <span className="text-3xl">{stat.icon}</span>
-              <p className="text-3xl font-display font-black text-gray-900 mt-3">{stat.value}</p>
+              <p className="text-3xl font-display font-black text-white mt-3">{stat.value}</p>
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">{stat.label}</p>
             </div>
           </div>
@@ -84,20 +84,20 @@ export default function CustomerDashboard() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-2xl w-fit">
+      <div className="flex items-center gap-3 bg-surface-hover p-2 rounded-2xl w-fit">
         {filters.map(f => (
           <button
             key={f.value}
             onClick={() => setFilter(f.value)}
             className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
               filter === f.value
-                ? 'bg-white text-gray-900 shadow-sm border border-gray-100'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-surface-card text-white shadow-sm border border-surface-border'
+                : 'text-slate-500 hover:text-slate-400'
             }`}
           >
             {f.label}
             <span className={`text-[10px] px-2 py-0.5 rounded-full ${
-              filter === f.value ? 'bg-primary/10 text-primary' : 'bg-gray-200 text-gray-500'
+              filter === f.value ? 'bg-primary/10 text-primary' : 'bg-gray-200 text-slate-500'
             }`}>{f.count}</span>
           </button>
         ))}
@@ -109,12 +109,12 @@ export default function CustomerDashboard() {
           <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       ) : filteredBookings.length === 0 ? (
-        <div className="bg-white p-16 rounded-[40px] text-center border border-gray-100 shadow-sm">
+        <div className="bg-surface-card p-16 rounded-[40px] text-center border border-surface-border shadow-sm">
           <div className="text-6xl mb-6">🎫</div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">
+          <h3 className="text-xl font-bold text-white mb-2">
             {filter === 'all' ? 'No bookings yet' : `No ${filter.toLowerCase()} bookings`}
           </h3>
-          <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+          <p className="text-slate-500 mb-8 max-w-sm mx-auto">
             Ready to start your journey? Explore our routes and book your first trip with BusMS.
           </p>
           <Link to="/" className="btn-primary px-10 py-4 rounded-2xl shadow-xl shadow-primary/20 inline-flex">
@@ -124,7 +124,7 @@ export default function CustomerDashboard() {
       ) : (
         <div className="grid grid-cols-1 gap-6">
           {filteredBookings.map(booking => (
-            <div key={booking._id} className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-8 hover:shadow-xl transition-all group">
+            <div key={booking._id} className="bg-surface-card rounded-[32px] border border-surface-border shadow-sm p-8 hover:shadow-xl transition-all group">
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                 <div className="flex items-center gap-6 flex-1">
                   {/* Date Badge */}
@@ -142,24 +142,24 @@ export default function CustomerDashboard() {
 
                   {/* Route Info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xl font-bold text-gray-900 truncate">{booking.route?.name}</h3>
+                    <h3 className="text-xl font-bold text-white truncate">{booking.route?.name}</h3>
                     <div className="mt-2 flex flex-wrap gap-4 items-center">
-                      <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <span className="flex items-center gap-1.5 text-sm text-slate-500">
                         <span className="text-lg">📍</span> {booking.route?.origin}
                       </span>
                       <span className="text-gray-300">→</span>
-                      <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <span className="flex items-center gap-1.5 text-sm text-slate-500">
                         <span className="text-lg">🏁</span> {booking.route?.destination}
                       </span>
                     </div>
                     <div className="mt-3 flex flex-wrap gap-3">
-                      <span className="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                      <span className="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                         💺 Seat {booking.seat_number}
                       </span>
-                      <span className="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                      <span className="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                         🕐 {booking.departure_time}
                       </span>
-                      <span className="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                      <span className="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                         🚌 {booking.route?.vehicle_type || 'Bus'}
                       </span>
                     </div>
@@ -171,16 +171,16 @@ export default function CustomerDashboard() {
                   <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
                     booking.status === 'Confirmed' ? 'bg-green-50 text-green-600 border-green-200' :
                     booking.status === 'Cancelled' ? 'bg-red-50 text-red-600 border-red-200' :
-                    booking.status === 'Completed' ? 'bg-gray-100 text-gray-600 border-gray-200' :
-                    'bg-blue-50 text-blue-600 border-blue-200'
+                    booking.status === 'Completed' ? 'bg-gray-100 text-slate-500 border-surface-border' :
+                    'bg-blue-50 text-primary border-blue-200'
                   }`}>
                     {booking.status}
                   </div>
-                  <div className="text-2xl font-display font-black text-gray-900">${booking.price}</div>
+                  <div className="text-2xl font-display font-black text-white">${booking.price}</div>
                   <div className="flex items-center gap-3">
                     <Link
                       to={`/booking-details/${booking._id}`}
-                      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-200 transition-colors"
+                      className="px-4 py-2 bg-gray-100 text-slate-400 rounded-xl text-xs font-bold hover:bg-gray-200 transition-colors"
                     >
                       View Details
                     </Link>
@@ -191,8 +191,8 @@ export default function CustomerDashboard() {
                           className="px-4 py-2 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-dark transition-colors flex items-center gap-1.5 shadow-lg shadow-primary/20"
                         >
                           <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-surface-card opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-surface-card"></span>
                           </span>
                           Track Live
                         </Link>

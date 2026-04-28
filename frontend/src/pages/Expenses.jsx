@@ -35,8 +35,8 @@ function ExpenseModal({ vehicles, onClose, onSave }) {
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="flex items-center justify-between p-6 border-b border-[#E2E8F0]">
-          <h2 className="text-lg font-display font-bold text-gray-900">Add Expense</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors">
+          <h2 className="text-lg font-display font-bold text-white">Add Expense</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -115,8 +115,8 @@ export default function Expenses() {
     { key: 'date', label: 'Date', render: v => new Date(v).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) },
     { key: 'category', label: 'Category', render: v => <span className={CAT_BADGE[v] || 'badge-gray'}>{v}</span> },
     { key: 'registration_number', label: 'Vehicle', render: v => v ? <span className="font-mono text-xs text-primary-light">{v}</span> : '—' },
-    { key: 'amount', label: 'Amount', render: v => <span className="font-semibold text-gray-900">₹{Number(v).toLocaleString('en-IN')}</span> },
-    { key: 'description', label: 'Description', render: v => v ? <span className="text-gray-500 text-xs">{v}</span> : '—' },
+    { key: 'amount', label: 'Amount', render: v => <span className="font-semibold text-white">₹{Number(v).toLocaleString('en-IN')}</span> },
+    { key: 'description', label: 'Description', render: v => v ? <span className="text-slate-500 text-xs">{v}</span> : '—' },
     { key: 'created_by_name', label: 'Added By', render: v => v || '—' },
   ];
 
@@ -125,7 +125,7 @@ export default function Expenses() {
       <div className="page-header">
         <div>
           <h1 className="page-title">Expenses</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Total: ₹{total.toLocaleString('en-IN')}</p>
+          <p className="text-sm text-slate-500 mt-0.5">Total: ₹{total.toLocaleString('en-IN')}</p>
         </div>
         <button className="btn-primary" onClick={() => setShowModal(true)}>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

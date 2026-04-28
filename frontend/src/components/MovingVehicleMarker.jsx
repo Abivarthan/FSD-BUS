@@ -74,24 +74,24 @@ const MovingVehicleMarker = ({ vehicle, autoFollow = false }) => {
   return (
     <Marker position={currentPos} icon={createBusIcon(heading, true)}>
       <Popup className="premium-popup">
-        <div className="p-3 w-64 bg-white rounded-xl">
+        <div className="p-3 w-64 bg-surface-card rounded-xl">
            <div className="flex items-center gap-3 border-b pb-2 mb-3">
-             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-primary">
                <Navigation size={20} />
              </div>
              <div>
-               <h3 className="font-bold text-gray-900">{vehicle.registration_number}</h3>
-               <p className="text-[10px] text-blue-600 font-black uppercase tracking-widest">In Transit</p>
+               <h3 className="font-bold text-white">{vehicle.registration_number}</h3>
+               <p className="text-[10px] text-primary font-black uppercase tracking-widest">In Transit</p>
              </div>
            </div>
            
            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 p-2 rounded-lg">
-                <p className="text-[10px] text-gray-500 font-bold uppercase">Speed</p>
+              <div className="bg-surface-hover p-2 rounded-lg">
+                <p className="text-[10px] text-slate-500 font-bold uppercase">Speed</p>
                 <p className="text-sm font-black">{Math.round(vehicle.speed || 0)} km/h</p>
               </div>
-              <div className="bg-gray-50 p-2 rounded-lg">
-                <p className="text-[10px] text-gray-500 font-bold uppercase">Status</p>
+              <div className="bg-surface-hover p-2 rounded-lg">
+                <p className="text-[10px] text-slate-500 font-bold uppercase">Status</p>
                 <p className="text-sm font-black text-green-600">Active</p>
               </div>
            </div>

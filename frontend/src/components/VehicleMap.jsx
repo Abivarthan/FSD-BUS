@@ -121,8 +121,8 @@ const VehicleMap = ({
       </MapContainer>
 
       {/* Map Overlay Controls */}
-      <div className="absolute bottom-4 left-4 z-[1000] bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg border border-gray-200">
-        <div className="flex items-center gap-4 text-xs font-semibold text-gray-700">
+      <div className="absolute bottom-4 left-4 z-[1000] bg-surface-card/90 backdrop-blur-md p-3 rounded-lg shadow-lg border border-surface-border">
+        <div className="flex items-center gap-4 text-xs font-semibold text-slate-400">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
             <span>Route Path</span>

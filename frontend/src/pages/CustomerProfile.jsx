@@ -68,16 +68,16 @@ export default function CustomerProfile() {
       {/* Profile Header */}
       <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-primary/80 rounded-[40px] p-10 text-white">
         <div className="absolute top-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-white/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-60 h-60 bg-surface-card/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4" />
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <div className="w-28 h-28 bg-white/10 backdrop-blur-sm rounded-[32px] border border-white/20 flex items-center justify-center text-5xl font-display font-black text-white shadow-2xl">
+          <div className="w-28 h-28 bg-surface-card/10 backdrop-blur-sm rounded-[32px] border border-white/20 flex items-center justify-center text-5xl font-display font-black text-white shadow-2xl">
             {profile?.name?.charAt(0)?.toUpperCase()}
           </div>
           <div className="text-center md:text-left flex-1">
             <h1 className="text-4xl font-display font-black mb-2">{profile?.name}</h1>
             <p className="text-white/60 text-lg">{profile?.email}</p>
             <div className="flex flex-wrap items-center gap-4 mt-4">
-              <span className="px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10">
+              <span className="px-4 py-1.5 bg-surface-card/10 backdrop-blur-sm rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10">
                 👤 {profile?.role}
               </span>
               <span className="px-4 py-1.5 bg-green-500/20 backdrop-blur-sm rounded-full text-[10px] font-bold uppercase tracking-widest text-green-300 border border-green-400/20">
@@ -90,7 +90,7 @@ export default function CustomerProfile() {
           </div>
           <button
             onClick={() => setEditing(!editing)}
-            className="px-8 py-3 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-2xl font-bold text-sm hover:bg-white/20 transition-all"
+            className="px-8 py-3 bg-surface-card/10 backdrop-blur-sm border border-white/20 text-white rounded-2xl font-bold text-sm hover:bg-surface-card/20 transition-all"
           >
             {editing ? '✕ Cancel' : '✏️ Edit Profile'}
           </button>
@@ -100,13 +100,13 @@ export default function CustomerProfile() {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat) => (
-          <div key={stat.label} className="bg-white p-6 rounded-[28px] border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
+          <div key={stat.label} className="bg-surface-card p-6 rounded-[28px] border border-surface-border shadow-sm hover:shadow-xl transition-all group">
             <div className="flex items-center gap-4 mb-4">
               <div className={`w-12 h-12 ${stat.color}/10 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform`}>
                 {stat.icon}
               </div>
             </div>
-            <p className="text-3xl font-display font-black text-gray-900">{stat.value}</p>
+            <p className="text-3xl font-display font-black text-white">{stat.value}</p>
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">{stat.label}</p>
           </div>
         ))}
@@ -123,7 +123,7 @@ export default function CustomerProfile() {
 
       {/* Profile Details / Edit Form */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+        <div className="bg-surface-card p-8 rounded-[32px] border border-surface-border shadow-sm">
           <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8 pb-2 border-b border-gray-50 flex items-center gap-2">
             <span>👤</span> Personal Information
           </h2>
@@ -135,7 +135,7 @@ export default function CustomerProfile() {
                   type="text"
                   value={form.name}
                   onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                  className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-gray-900"
+                  className="w-full px-5 py-4 bg-surface-hover border border-surface-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-white"
                   required
                 />
               </div>
@@ -145,7 +145,7 @@ export default function CustomerProfile() {
                   type="email"
                   value={form.email}
                   onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-gray-900"
+                  className="w-full px-5 py-4 bg-surface-hover border border-surface-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-white"
                   required
                 />
               </div>
@@ -155,7 +155,7 @@ export default function CustomerProfile() {
                   type="tel"
                   value={form.phone}
                   onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                  className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-gray-900"
+                  className="w-full px-5 py-4 bg-surface-hover border border-surface-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-white"
                   placeholder="+91 98765 43210"
                 />
               </div>
@@ -164,7 +164,7 @@ export default function CustomerProfile() {
                 <textarea
                   value={form.address}
                   onChange={e => setForm(p => ({ ...p, address: e.target.value }))}
-                  className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-gray-900 resize-none"
+                  className="w-full px-5 py-4 bg-surface-hover border border-surface-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium text-white resize-none"
                   rows={3}
                   placeholder="Enter your address"
                 />
@@ -185,11 +185,11 @@ export default function CustomerProfile() {
                 { label: 'Phone', value: profile?.phone || 'Not provided', icon: '📱' },
                 { label: 'Address', value: profile?.address || 'Not provided', icon: '📍' },
               ].map((item) => (
-                <div key={item.label} className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                <div key={item.label} className="flex items-start gap-4 p-4 bg-surface-hover rounded-2xl">
                   <span className="text-xl mt-0.5">{item.icon}</span>
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
-                    <p className="text-gray-900 font-semibold mt-1">{item.value}</p>
+                    <p className="text-white font-semibold mt-1">{item.value}</p>
                   </div>
                 </div>
               ))}
@@ -199,28 +199,28 @@ export default function CustomerProfile() {
 
         {/* Account Security */}
         <div className="space-y-8">
-          <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+          <div className="bg-surface-card p-8 rounded-[32px] border border-surface-border shadow-sm">
             <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8 pb-2 border-b border-gray-50 flex items-center gap-2">
               <span>🔒</span> Account Security
             </h2>
             <div className="space-y-6">
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+              <div className="flex items-center justify-between p-4 bg-surface-hover rounded-2xl">
                 <div className="flex items-center gap-3">
                   <span className="text-xl">🔑</span>
                   <div>
-                    <p className="font-semibold text-gray-900 text-sm">Password</p>
+                    <p className="font-semibold text-white text-sm">Password</p>
                     <p className="text-gray-400 text-xs">Last changed 30 days ago</p>
                   </div>
                 </div>
-                <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-bold hover:bg-gray-200 transition-colors">
+                <button className="px-4 py-2 bg-gray-100 text-slate-500 rounded-xl text-xs font-bold hover:bg-gray-200 transition-colors">
                   Change
                 </button>
               </div>
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+              <div className="flex items-center justify-between p-4 bg-surface-hover rounded-2xl">
                 <div className="flex items-center gap-3">
                   <span className="text-xl">📱</span>
                   <div>
-                    <p className="font-semibold text-gray-900 text-sm">Two-Factor Auth</p>
+                    <p className="font-semibold text-white text-sm">Two-Factor Auth</p>
                     <p className="text-gray-400 text-xs">Not enabled</p>
                   </div>
                 </div>
@@ -232,7 +232,7 @@ export default function CustomerProfile() {
                 <div className="flex items-center gap-3">
                   <span className="text-xl">✅</span>
                   <div>
-                    <p className="font-semibold text-gray-900 text-sm">Email Verified</p>
+                    <p className="font-semibold text-white text-sm">Email Verified</p>
                     <p className="text-green-600 text-xs font-medium">{profile?.email}</p>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ export default function CustomerProfile() {
           </div>
 
           {/* Travel Preferences */}
-          <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+          <div className="bg-surface-card p-8 rounded-[32px] border border-surface-border shadow-sm">
             <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8 pb-2 border-b border-gray-50 flex items-center gap-2">
               <span>⚙️</span> Preferences
             </h2>
@@ -252,13 +252,13 @@ export default function CustomerProfile() {
                 { label: 'SMS Alerts', desc: 'Trip reminders & tracking alerts', enabled: false },
                 { label: 'Promotional Offers', desc: 'Discounts and special deals', enabled: true },
               ].map((pref) => (
-                <div key={pref.label} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                <div key={pref.label} className="flex items-center justify-between p-4 bg-surface-hover rounded-2xl">
                   <div>
-                    <p className="font-semibold text-gray-900 text-sm">{pref.label}</p>
+                    <p className="font-semibold text-white text-sm">{pref.label}</p>
                     <p className="text-gray-400 text-xs">{pref.desc}</p>
                   </div>
                   <div className={`w-12 h-7 rounded-full flex items-center cursor-pointer transition-colors ${pref.enabled ? 'bg-primary justify-end' : 'bg-gray-300 justify-start'}`}>
-                    <div className="w-5 h-5 bg-white rounded-full shadow-sm mx-1" />
+                    <div className="w-5 h-5 bg-surface-card rounded-full shadow-sm mx-1" />
                   </div>
                 </div>
               ))}

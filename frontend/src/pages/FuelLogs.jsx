@@ -36,8 +36,8 @@ function FuelModal({ vehicles, onClose, onSave }) {
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="flex items-center justify-between p-6 border-b border-[#E2E8F0]">
-          <h2 className="text-lg font-display font-bold text-gray-900">Add Fuel Log</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors">
+          <h2 className="text-lg font-display font-bold text-white">Add Fuel Log</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -101,13 +101,13 @@ function FuelModal({ vehicles, onClose, onSave }) {
 const BillViewer = ({ url, onClose }) => (
   <div className="modal-overlay" style={{ zIndex: 100 }} onClick={onClose}>
     <div className="max-w-4xl w-full p-4 flex flex-col items-center">
-      <button className="self-end mb-2 text-gray-900 bg-black/40 rounded-full p-2 hover:bg-gray-900/40 transition-colors" onClick={onClose}>
+      <button className="self-end mb-2 text-white bg-black/40 rounded-full p-2 hover:bg-gray-900/40 transition-colors" onClick={onClose}>
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
       </button>
       {url.endsWith('.pdf') ? (
-        <iframe src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="w-full h-[80vh] bg-white rounded-lg shadow-2xl" />
+        <iframe src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="w-full h-[80vh] bg-surface-card rounded-lg shadow-2xl" />
       ) : (
-        <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-white" alt="Bill" />
+        <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${url}`} className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl bg-surface-card" alt="Bill" />
       )}
     </div>
   </div>
@@ -160,7 +160,7 @@ export default function FuelLogs() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </button>
-      ) : <span className="text-gray-700">—</span>
+      ) : <span className="text-slate-400">—</span>
     }
   ];
 
@@ -169,7 +169,7 @@ export default function FuelLogs() {
       <div className="page-header">
         <div>
           <h1 className="page-title">Fuel Logs</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{logs.length} entries</p>
+          <p className="text-sm text-slate-500 mt-0.5">{logs.length} entries</p>
         </div>
         <button className="btn-primary" onClick={() => setShowModal(true)}>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -181,15 +181,15 @@ export default function FuelLogs() {
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="card p-4">
-          <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Total Entries</p>
-          <p className="text-2xl font-display font-bold text-gray-900">{logs.length}</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Total Entries</p>
+          <p className="text-2xl font-display font-bold text-white">{logs.length}</p>
         </div>
         <div className="card p-4 text-accent-green bg-green-50/10 border-green-100/20">
-          <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Total Liters</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Total Liters</p>
           <p className="text-2xl font-display font-bold text-green-700">{totalLiters.toFixed(0)} L</p>
         </div>
         <div className="card p-4 text-primary bg-primary/5 border-primary/10">
-          <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Total Cost</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Total Cost</p>
           <p className="text-2xl font-display font-bold text-primary-dark">₹{totalCost.toLocaleString('en-IN')}</p>
         </div>
       </div>

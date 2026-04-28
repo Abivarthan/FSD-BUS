@@ -142,11 +142,11 @@ export default function Reports() {
     <div className="space-y-6">
       <div className="page-header">
         <h1 className="page-title">Intelligence & Reports</h1>
-        <p className="text-gray-500 text-sm">Generate and export system-wide operational reports</p>
+        <p className="text-slate-500 text-sm">Generate and export system-wide operational reports</p>
       </div>
 
       <div className="card p-5">
-        <label className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 block">Select Report Category</label>
+        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 block">Select Report Category</label>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {REPORTS.map(r => (
             <button
@@ -155,16 +155,16 @@ export default function Reports() {
               className={`p-4 rounded-2xl border-2 text-left transition-all ${
                 activeReport === r.id
                   ? 'border-primary bg-primary/5 ring-4 ring-primary/10'
-                  : 'border-[#F1F5F9] hover:border-gray-300 bg-white'
+                  : 'border-[#F1F5F9] hover:border-slate-700 bg-surface-card'
               }`}
             >
               <div className="text-3xl mb-3">{r.icon}</div>
-              <div className={`text-sm font-bold ${activeReport === r.id ? 'text-primary' : 'text-gray-700'}`}>{r.label}</div>
+              <div className={`text-sm font-bold ${activeReport === r.id ? 'text-primary' : 'text-slate-400'}`}>{r.label}</div>
             </button>
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-4 items-end bg-[#F8FAFC] p-4 rounded-xl">
+        <div className="flex flex-wrap gap-4 items-end bg-surface p-4 rounded-xl">
           {activeReport === 'vehicle_monthly' ? (
             <>
               <div className="flex-1 min-w-[200px]">
@@ -225,8 +225,8 @@ export default function Reports() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(summary).map(([key, val]) => (
             <div key={key} className="card p-4 border-l-4 border-l-primary">
-              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">{key.replace(/_/g, ' ')}</p>
-              <p className="text-xl font-display font-black text-gray-900">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">{key.replace(/_/g, ' ')}</p>
+              <p className="text-xl font-display font-black text-white">
                 {typeof val === 'number' && (key.includes('cost') || key.includes('total'))
                   ? `₹${Math.round(val).toLocaleString('en-IN')}`
                   : typeof val === 'number' && key.includes('liter')
@@ -240,23 +240,23 @@ export default function Reports() {
 
       {generated && activeReport === 'vehicle_monthly' && data[0] && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="card p-6 bg-gradient-to-br from-primary to-primary-dark text-gray-900 lg:col-span-1">
+          <div className="card p-6 bg-gradient-to-br from-primary to-primary-dark text-white lg:col-span-1">
             <h3 className="font-display font-bold text-xl mb-4">Monthly Summary</h3>
             <div className="space-y-4">
               <div className="flex justify-between items-center pb-2 border-b border-white/20">
-                <span className="text-gray-900/70 text-sm">Vehicle</span>
+                <span className="text-white/70 text-sm">Vehicle</span>
                 <span className="font-bold">{data[0].vehicle.registration_number}</span>
               </div>
               <div className="flex justify-between items-center pb-2 border-b border-white/20">
-                <span className="text-gray-900/70 text-sm">Fuel Cost</span>
+                <span className="text-white/70 text-sm">Fuel Cost</span>
                 <span className="font-bold">₹{data[0].fuel.cost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between items-center pb-2 border-b border-white/20">
-                <span className="text-gray-900/70 text-sm">Maintenance</span>
+                <span className="text-white/70 text-sm">Maintenance</span>
                 <span className="font-bold">₹{data[0].maintenance.cost.toLocaleString()}</span>
               </div>
               <div className="pt-2">
-                <p className="text-gray-900/60 text-xs uppercase tracking-tighter">Total Monthly Expense</p>
+                <p className="text-white/60 text-xs uppercase tracking-tighter">Total Monthly Expense</p>
                 <p className="text-4xl font-display font-black mt-1">₹{data[0].total_cost.toLocaleString()}</p>
               </div>
             </div>
@@ -266,15 +266,15 @@ export default function Reports() {
               <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
               </div>
-              <h3 className="font-bold text-lg text-gray-900">Ready for export</h3>
-              <p className="text-gray-500 text-sm mb-6">Download the comprehensive financial report for this vehicle.</p>
+              <h3 className="font-bold text-lg text-white">Ready for export</h3>
+              <p className="text-slate-500 text-sm mb-6">Download the comprehensive financial report for this vehicle.</p>
               <div className="flex gap-4 justify-center">
                 <button onClick={() => exportFile('pdf')} className="btn-primary space-x-2">
-                  <span className="text-[10px] bg-red-500 text-gray-900 px-1 rounded">PDF</span>
+                  <span className="text-[10px] bg-red-500 text-white px-1 rounded">PDF</span>
                   <span>Export PDF</span>
                 </button>
                 <button onClick={() => exportFile('excel')} className="btn-secondary space-x-2">
-                  <span className="text-[10px] bg-green-500 text-gray-900 px-1 rounded">XLS</span>
+                  <span className="text-[10px] bg-green-500 text-white px-1 rounded">XLS</span>
                   <span>Export Excel</span>
                 </button>
               </div>
@@ -286,7 +286,7 @@ export default function Reports() {
       {generated && activeReport !== 'vehicle_monthly' && (
         <div className="card">
           <div className="p-4 border-b border-[#F1F5F9] flex justify-between items-center">
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">{data.length} entries matching criteria</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{data.length} entries matching criteria</p>
             <button onClick={exportCSV} className="text-primary hover:underline text-xs font-bold flex items-center gap-1">
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
               Quick Export CSV

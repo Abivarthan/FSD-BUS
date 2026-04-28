@@ -46,38 +46,38 @@ export default function Booking() {
     }
   };
 
-  if (loading) return <div className="min-h-[400px] flex items-center justify-center h-full w-full bg-gray-50 rounded-2xl animate-pulse" />;
-  if (!route) return <div className="text-center p-20 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm text-gray-500 font-bold uppercase tracking-widest">Route not found</div>;
+  if (loading) return <div className="min-h-[400px] flex items-center justify-center h-full w-full bg-surface-hover rounded-2xl animate-pulse" />;
+  if (!route) return <div className="text-center p-20 bg-surface-hover rounded-2xl border border-surface-border shadow-sm text-slate-500 font-bold uppercase tracking-widest">Route not found</div>;
 
   return (
-    <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 text-gray-900">
+    <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 text-white">
       {/* Route Info */}
       <div className="flex-1 space-y-10">
         <div className="flex items-center gap-6">
           <div className="w-20 h-20 bg-primary/10 rounded-[32px] flex items-center justify-center text-4xl">🚌</div>
           <div>
-            <h1 className="text-4xl font-display font-black text-gray-900 leading-tight">{route.name}</h1>
-            <p className="text-gray-500 text-lg">{route.origin} → {route.destination}</p>
+            <h1 className="text-4xl font-display font-black text-white leading-tight">{route.name}</h1>
+            <p className="text-slate-500 text-lg">{route.origin} → {route.destination}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
+            <div className="bg-surface-card p-8 rounded-[40px] border border-surface-border shadow-sm">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-50 pb-2 flex items-center gap-2"><span>📅</span> Schedule Overview</p>
                 <div className="space-y-4">
                     {route.schedule.map((s, i) => (
-                        <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl group hover:bg-primary/5 transition-all">
-                            <span className="font-bold text-gray-900">{s.day}</span>
-                            <span className="px-4 py-2 bg-white rounded-xl text-primary font-black shadow-sm group-hover:shadow-md transition-all">{s.time}</span>
+                        <div key={i} className="flex items-center justify-between p-4 bg-surface-hover rounded-2xl group hover:bg-primary/5 transition-all">
+                            <span className="font-bold text-white">{s.day}</span>
+                            <span className="px-4 py-2 bg-surface-card rounded-xl text-primary font-black shadow-sm group-hover:shadow-md transition-all">{s.time}</span>
                         </div>
                     ))}
                 </div>
             </div>
 
-            <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm flex flex-col justify-between">
+            <div className="bg-surface-card p-8 rounded-[40px] border border-surface-border shadow-sm flex flex-col justify-between">
                  <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-50 pb-2 flex items-center gap-2"><span>✨</span> Premium Experience</p>
-                    <ul className="space-y-4 text-sm text-gray-500 font-medium">
+                    <ul className="space-y-4 text-sm text-slate-500 font-medium">
                         <li className="flex items-center gap-3"><span className="text-primary text-lg">✓</span> High-speed Wi-Fi available</li>
                         <li className="flex items-center gap-3"><span className="text-primary text-lg">✓</span> Fully air-conditioned cabin</li>
                         <li className="flex items-center gap-3"><span className="text-primary text-lg">✓</span> Comfortable leather seating</li>
@@ -103,7 +103,7 @@ export default function Booking() {
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">Travel Date</label>
               <input 
                 type="date" 
-                className="w-full px-6 py-4 bg-white/10 border-none rounded-2xl focus:ring-2 focus:ring-primary/40 transition-all font-medium text-white placeholder:text-white/20"
+                className="w-full px-6 py-4 bg-surface-card/10 border-none rounded-2xl focus:ring-2 focus:ring-primary/40 transition-all font-medium text-white placeholder:text-white/20"
                 value={bookingForm.date}
                 onChange={e => setBookingForm(p => ({ ...p, date: e.target.value }))}
                 required
@@ -113,21 +113,21 @@ export default function Booking() {
             <div className="space-y-2">
                <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">Departure Time</label>
                <select 
-                className="w-full px-6 py-4 bg-white/10 border-none rounded-2xl focus:ring-2 focus:ring-primary/40 transition-all font-medium text-white appearance-none"
+                className="w-full px-6 py-4 bg-surface-card/10 border-none rounded-2xl focus:ring-2 focus:ring-primary/40 transition-all font-medium text-white appearance-none"
                 value={bookingForm.time}
                 onChange={e => setBookingForm(p => ({ ...p, time: e.target.value }))}
                 required
                >
-                 <option value="" disabled className="text-gray-900">Select Time</option>
+                 <option value="" disabled className="text-white">Select Time</option>
                  {route.schedule.map((s, i) => (
-                    <option key={i} value={s.time} className="text-gray-900">{s.time} ({s.day})</option>
+                    <option key={i} value={s.time} className="text-white">{s.time} ({s.day})</option>
                  ))}
                </select>
             </div>
 
             <div className="space-y-4">
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 text-center block">Select Your Seat</label>
-              <div className="grid grid-cols-4 gap-3 bg-white/5 p-6 rounded-[32px] border border-white/10">
+              <div className="grid grid-cols-4 gap-3 bg-surface-card/5 p-6 rounded-[32px] border border-white/10">
                 {['A1', 'A2', '', 'A3', 'B1', 'B2', '', 'B3', 'C1', 'C2', '', 'C3', 'D1', 'D2', '', 'D3', 'E1', 'E2', '', 'E3'].map((s, i) => (
                   s === '' ? <div key={i} className="h-10" /> : (
                     <button
@@ -137,7 +137,7 @@ export default function Booking() {
                       className={`h-10 rounded-xl text-[10px] font-bold transition-all ${
                         bookingForm.seat === s 
                         ? 'bg-primary text-white shadow-lg shadow-primary/40 ring-2 ring-primary/20 scale-110' 
-                        : 'bg-white/10 text-white/60 hover:bg-white/20'
+                        : 'bg-surface-card/10 text-white/60 hover:bg-surface-card/20'
                       }`}
                     >
                       {s}

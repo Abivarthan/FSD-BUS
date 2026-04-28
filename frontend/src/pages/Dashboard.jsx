@@ -17,7 +17,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload?.length) {
     return (
       <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-xs">
-        <p className="text-gray-500 mb-1">{label}</p>
+        <p className="text-slate-500 mb-1">{label}</p>
         {payload.map((p, i) => (
           <p key={i} style={{ color: p.color }} className="font-semibold">
             {p.name}: {typeof p.value === 'number' && p.value > 100 ? fmtCurrency(p.value) : p.value}
@@ -60,8 +60,8 @@ export default function Dashboard() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="text-4xl mb-3">👋</div>
-          <h2 className="text-xl font-display font-bold text-gray-900">Welcome to BusMS</h2>
-          <p className="text-gray-500 mt-2">Use the sidebar to access your attendance and fuel logs.</p>
+          <h2 className="text-xl font-display font-bold text-white">Welcome to BusMS</h2>
+          <p className="text-slate-500 mt-2">Use the sidebar to access your attendance and fuel logs.</p>
         </div>
       </div>
     );
@@ -183,8 +183,8 @@ export default function Dashboard() {
               return (
                 <div key={i}>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="font-semibold text-gray-700">{v.vehicle}</span>
-                    <span className="text-gray-500">{fmtCurrency(v.total_cost)}</span>
+                    <span className="font-semibold text-slate-400">{v.vehicle}</span>
+                    <span className="text-slate-500">{fmtCurrency(v.total_cost)}</span>
                   </div>
                   <div className="h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
                     <div

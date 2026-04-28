@@ -68,14 +68,14 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
 
   const currentPoint = playbackData?.history[currentIndex];
 
-  if (loading) return <div className="h-screen flex items-center justify-center font-bold text-blue-600">Loading Fleet History...</div>;
+  if (loading) return <div className="h-screen flex items-center justify-center font-bold text-primary">Loading Fleet History...</div>;
 
   return (
     <div className="h-screen bg-gray-900 flex flex-col text-white">
       {/* Top Navigation */}
       <div className="bg-black/40 backdrop-blur-md border-b border-white/10 px-8 py-4 flex justify-between items-center">
         <div className="flex items-center gap-6">
-          <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
+          <button className="p-2 hover:bg-surface-card/10 rounded-full transition-colors">
             <ChevronLeft size={24} />
           </button>
           <div>
@@ -89,12 +89,12 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
           </div>
         </div>
         
-        <div className="flex bg-white/5 rounded-xl p-1 border border-white/10">
+        <div className="flex bg-surface-card/5 rounded-xl p-1 border border-white/10">
           {[1, 2, 5, 10].map(speed => (
             <button 
               key={speed}
               onClick={() => setPlaybackSpeed(speed)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${playbackSpeed === speed ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${playbackSpeed === speed ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
             >
               {speed}x
             </button>
@@ -106,14 +106,14 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
         {/* Sidebar Info */}
         <div className="w-80 bg-black/20 border-r border-white/10 p-6 flex flex-col gap-6">
           <div className="space-y-6">
-            <div className="bg-white/5 rounded-2xl p-5 border border-white/10 shadow-inner">
-               <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Current Point Analytics</h3>
+            <div className="bg-surface-card/5 rounded-2xl p-5 border border-white/10 shadow-inner">
+               <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Current Point Analytics</h3>
                <div className="space-y-4">
                  <div className="flex justify-between items-center">
                    <div className="text-sm font-medium text-gray-400 flex items-center gap-2">
                      <Navigation size={14} className="text-blue-400" /> Speed
                    </div>
-                   <div className="text-lg font-black">{Math.round(currentPoint?.speed || 0)} <span className="text-[10px] text-gray-500 font-bold">KM/H</span></div>
+                   <div className="text-lg font-black">{Math.round(currentPoint?.speed || 0)} <span className="text-[10px] text-slate-500 font-bold">KM/H</span></div>
                  </div>
                  <div className="flex justify-between items-center">
                    <div className="text-sm font-medium text-gray-400 flex items-center gap-2">
@@ -126,21 +126,21 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
                </div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-2xl p-5 border border-blue-500/30">
+            <div className="bg-gradient-to-br from-primary/20 to-purple-600/20 rounded-2xl p-5 border border-blue-500/30">
                <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4">Trip Summary</h3>
                <div className="space-y-3">
                  <div className="flex items-start gap-3">
                    <MapPin size={16} className="text-green-500 mt-1" />
                    <div>
-                     <p className="text-[10px] text-gray-500 font-bold">STARTING POINT</p>
+                     <p className="text-[10px] text-slate-500 font-bold">STARTING POINT</p>
                      <p className="text-xs font-bold">Chennai Central Depot</p>
                    </div>
                  </div>
-                 <div className="h-6 w-0.5 bg-white/10 ml-2"></div>
+                 <div className="h-6 w-0.5 bg-surface-card/10 ml-2"></div>
                  <div className="flex items-start gap-3">
                    <MapPin size={16} className="text-red-500 mt-1" />
                    <div>
-                     <p className="text-[10px] text-gray-500 font-bold">DESTINATION</p>
+                     <p className="text-[10px] text-slate-500 font-bold">DESTINATION</p>
                      <p className="text-xs font-bold">Madurai Bus Terminus</p>
                    </div>
                  </div>
@@ -149,7 +149,7 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
           </div>
 
           <div className="mt-auto">
-            <button className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-gray-200 transition-all flex items-center justify-center gap-2">
+            <button className="w-full bg-surface-card text-black py-3 rounded-xl font-bold hover:bg-gray-200 transition-all flex items-center justify-center gap-2">
               Generate Violations Report
             </button>
           </div>
@@ -170,14 +170,14 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
                 <div className="flex items-center gap-6 mb-6">
                   <button 
                     onClick={() => setIsPlaying(!isPlaying)}
-                    className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl shadow-blue-500/20"
+                    className="w-14 h-14 bg-primary rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl shadow-blue-500/20"
                   >
                     {isPlaying ? <Pause size={24} fill="white" /> : <Play size={24} className="ml-1" fill="white" />}
                   </button>
                   
                   <button 
                     onClick={() => setCurrentIndex(0)}
-                    className="p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition-colors"
+                    className="p-3 bg-surface-card/5 rounded-2xl hover:bg-surface-card/10 transition-colors"
                   >
                     <RotateCcw size={20} />
                   </button>
@@ -189,18 +189,18 @@ const TripPlaybackPage = ({ tripId = '66252bf4456a0c0017e8d2e1' }) => {
                       max={playbackData.history.length - 1} 
                       value={currentIndex}
                       onChange={(e) => setCurrentIndex(parseInt(e.target.value))}
-                      className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-blue-600"
+                      className="w-full h-1.5 bg-surface-card/10 rounded-full appearance-none cursor-pointer accent-blue-600"
                     />
-                    <div className="flex justify-between text-[10px] font-bold text-gray-500 tracking-widest">
+                    <div className="flex justify-between text-[10px] font-bold text-slate-500 tracking-widest">
                       <span>0% COMPLETION</span>
                       <span>{Math.round((currentIndex / (playbackData.history.length - 1)) * 100)}%</span>
                       <span>100% ARRIVAL</span>
                     </div>
                   </div>
                   
-                  <div className="text-sm font-black bg-white/5 px-4 py-2 rounded-xl border border-white/10">
+                  <div className="text-sm font-black bg-surface-card/5 px-4 py-2 rounded-xl border border-white/10">
                      {Math.round((currentIndex / playbackData.history.length) * (playbackData.history.length * 3))} 
-                     <span className="text-[10px] ml-1 text-gray-500">KM</span>
+                     <span className="text-[10px] ml-1 text-slate-500">KM</span>
                   </div>
                 </div>
              </div>

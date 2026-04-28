@@ -76,7 +76,7 @@ export default function ChatbotWidget() {
 
       {/* Chat Interface */}
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[350px] sm:w-[420px] h-[600px] max-h-[80vh] flex flex-col bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/40 overflow-hidden animate-slide-up origin-bottom-right">
+        <div className="absolute bottom-20 right-0 w-[350px] sm:w-[420px] h-[600px] max-h-[80vh] flex flex-col bg-surface-card/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/40 overflow-hidden animate-slide-up origin-bottom-right">
           
           {/* Header */}
           <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-6 flex items-center justify-between shadow-lg">
@@ -108,7 +108,7 @@ export default function ChatbotWidget() {
                 <div className={`group relative max-w-[85%] px-5 py-3.5 rounded-3xl shadow-sm text-sm leading-relaxed transition-all hover:shadow-md ${
                   msg.role === 'user' 
                     ? 'bg-primary text-white rounded-tr-lg font-medium' 
-                    : 'bg-white border border-slate-100 text-slate-700 rounded-tl-lg font-normal'
+                    : 'bg-surface-card border border-slate-100 text-slate-700 rounded-tl-lg font-normal'
                 }`}>
                   {msg.text}
                   <div className={`flex items-center gap-1 mt-2 text-[10px] opacity-0 group-hover:opacity-60 transition-opacity ${
@@ -124,7 +124,7 @@ export default function ChatbotWidget() {
             ))}
 
             {loading && (
-              <div className="flex items-center gap-2 p-3 bg-white border border-slate-100 rounded-2xl w-fit shadow-sm">
+              <div className="flex items-center gap-2 p-3 bg-surface-card border border-slate-100 rounded-2xl w-fit shadow-sm">
                 <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-duration:0.6s]" />
                 <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-duration:0.6s] [animation-delay:0.2s]" />
                 <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-duration:0.6s] [animation-delay:0.4s]" />
@@ -151,10 +151,10 @@ export default function ChatbotWidget() {
           </div>
 
           {/* Footer Input */}
-          <div className="p-6 bg-white border-t border-slate-100 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
+          <div className="p-6 bg-surface-card border-t border-slate-100 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
             <form 
               onSubmit={handleSend}
-              className="relative flex items-center gap-3 bg-slate-50 rounded-2xl p-2 pl-4 border border-slate-100 focus-within:border-primary/30 focus-within:bg-white focus-within:shadow-lg focus-within:shadow-primary/5 transition-all"
+              className="relative flex items-center gap-3 bg-slate-50 rounded-2xl p-2 pl-4 border border-slate-100 focus-within:border-primary/30 focus-within:bg-surface-card focus-within:shadow-lg focus-within:shadow-primary/5 transition-all"
             >
               <input
                 type="text"

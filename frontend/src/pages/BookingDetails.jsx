@@ -32,8 +32,8 @@ export default function BookingDetails() {
   );
 
   if (!data) return (
-    <div className="text-center p-20 bg-gray-50 rounded-[32px] border border-gray-100">
-      <p className="text-gray-500 font-bold uppercase tracking-widest">Booking not found</p>
+    <div className="text-center p-20 bg-surface-hover rounded-[32px] border border-surface-border">
+      <p className="text-slate-500 font-bold uppercase tracking-widest">Booking not found</p>
     </div>
   );
 
@@ -43,7 +43,7 @@ export default function BookingDetails() {
     Confirmed: 'bg-green-100 text-green-700 border-green-200',
     Pending: 'bg-blue-100 text-blue-700 border-blue-200',
     Cancelled: 'bg-red-100 text-red-700 border-red-200',
-    Completed: 'bg-gray-100 text-gray-700 border-gray-200'
+    Completed: 'bg-gray-100 text-slate-400 border-surface-border'
   };
 
   return (
@@ -51,7 +51,7 @@ export default function BookingDetails() {
       {/* Back Button */}
       <button
         onClick={() => navigate('/customer-dashboard')}
-        className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-gray-600 uppercase tracking-widest transition-colors"
+        className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-slate-500 uppercase tracking-widest transition-colors"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
         Back to Bookings
@@ -78,8 +78,8 @@ export default function BookingDetails() {
                 className="px-8 py-4 bg-primary text-white rounded-2xl font-bold shadow-xl shadow-primary/30 hover:shadow-primary/50 active:scale-[0.98] transition-all flex items-center gap-3 group"
               >
                 <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-surface-card opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-surface-card"></span>
                 </span>
                 Track Live
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
@@ -92,7 +92,7 @@ export default function BookingDetails() {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Booking Info */}
-        <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+        <div className="bg-surface-card p-8 rounded-[32px] border border-surface-border shadow-sm">
           <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6 pb-2 border-b border-gray-50 flex items-center gap-2">
             <span>🎫</span> Booking Information
           </h2>
@@ -105,11 +105,11 @@ export default function BookingDetails() {
               { label: 'Payment Status', value: booking.payment_status, icon: '💳' },
               { label: 'Bus Type', value: route.vehicle_type, icon: '🚌' },
             ].map(item => (
-              <div key={item.label} className="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+              <div key={item.label} className="flex items-center gap-4 p-3 bg-surface-hover rounded-2xl hover:bg-gray-100 transition-colors">
                 <span className="text-lg">{item.icon}</span>
                 <div className="flex-1">
                   <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
-                  <p className="text-gray-900 font-semibold text-sm">{item.value}</p>
+                  <p className="text-white font-semibold text-sm">{item.value}</p>
                 </div>
               </div>
             ))}
@@ -117,7 +117,7 @@ export default function BookingDetails() {
         </div>
 
         {/* Vehicle Info */}
-        <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+        <div className="bg-surface-card p-8 rounded-[32px] border border-surface-border shadow-sm">
           <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6 pb-2 border-b border-gray-50 flex items-center gap-2">
             <span>🚌</span> Vehicle Details
           </h2>
@@ -125,7 +125,7 @@ export default function BookingDetails() {
             <div className="w-24 h-24 mx-auto bg-primary/5 rounded-[28px] flex items-center justify-center text-5xl mb-4">
               🚌
             </div>
-            <h3 className="text-xl font-display font-black text-gray-900">{vehicle.model}</h3>
+            <h3 className="text-xl font-display font-black text-white">{vehicle.model}</h3>
             <p className="text-primary font-bold text-sm mt-1">{vehicle.registration_number}</p>
           </div>
           <div className="space-y-4">
@@ -135,9 +135,9 @@ export default function BookingDetails() {
               { label: 'Fuel Type', value: vehicle.fuel_type?.charAt(0).toUpperCase() + vehicle.fuel_type?.slice(1) },
               { label: 'Status', value: vehicle.status?.charAt(0).toUpperCase() + vehicle.status?.slice(1) },
             ].map(item => (
-              <div key={item.label} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+              <div key={item.label} className="flex items-center justify-between p-3 bg-surface-hover rounded-xl">
                 <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{item.label}</span>
-                <span className="text-sm font-semibold text-gray-900">{item.value}</span>
+                <span className="text-sm font-semibold text-white">{item.value}</span>
               </div>
             ))}
           </div>
@@ -148,7 +148,7 @@ export default function BookingDetails() {
         </div>
 
         {/* Driver Info */}
-        <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+        <div className="bg-surface-card p-8 rounded-[32px] border border-surface-border shadow-sm">
           <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6 pb-2 border-b border-gray-50 flex items-center gap-2">
             <span>👨‍✈️</span> Driver Details
           </h2>
@@ -156,15 +156,15 @@ export default function BookingDetails() {
             <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-primary-dark rounded-[28px] flex items-center justify-center text-4xl font-display font-black text-white mb-4 shadow-xl shadow-primary/20">
               {driver.name?.charAt(0)}
             </div>
-            <h3 className="text-xl font-display font-black text-gray-900">{driver.name}</h3>
-            <p className="text-gray-500 text-sm mt-1">Professional Driver</p>
+            <h3 className="text-xl font-display font-black text-white">{driver.name}</h3>
+            <p className="text-slate-500 text-sm mt-1">Professional Driver</p>
             <div className="flex items-center justify-center gap-1 mt-3">
               {[...Array(5)].map((_, i) => (
                 <svg key={i} className={`w-4 h-4 ${i < Math.floor(parseFloat(driver.rating)) ? 'text-amber-400' : 'text-gray-200'}`} fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               ))}
-              <span className="text-sm font-bold text-gray-900 ml-1">{driver.rating}</span>
+              <span className="text-sm font-bold text-white ml-1">{driver.rating}</span>
             </div>
           </div>
           <div className="space-y-4">
@@ -174,16 +174,16 @@ export default function BookingDetails() {
               { label: 'Total Trips', value: driver.total_trips, icon: '🛣️' },
               { label: 'Status', value: driver.status?.charAt(0).toUpperCase() + driver.status?.slice(1), icon: '🟢' },
             ].map(item => (
-              <div key={item.label} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+              <div key={item.label} className="flex items-center gap-3 p-3 bg-surface-hover rounded-xl">
                 <span className="text-lg">{item.icon}</span>
                 <div className="flex-1">
                   <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
-                  <p className="text-gray-900 font-semibold text-sm">{item.value}</p>
+                  <p className="text-white font-semibold text-sm">{item.value}</p>
                 </div>
               </div>
             ))}
           </div>
-          <button className="w-full mt-6 py-3 bg-gray-100 text-gray-700 rounded-2xl font-bold text-sm hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+          <button className="w-full mt-6 py-3 bg-gray-100 text-slate-400 rounded-2xl font-bold text-sm hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
             📞 Contact Driver
           </button>
         </div>
@@ -191,7 +191,7 @@ export default function BookingDetails() {
 
       {/* Route Stops */}
       {route.stops?.length > 0 && (
-        <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+        <div className="bg-surface-card p-8 rounded-[32px] border border-surface-border shadow-sm">
           <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6 pb-2 border-b border-gray-50 flex items-center gap-2">
             <span>📍</span> Route Stops
           </h2>
@@ -201,13 +201,13 @@ export default function BookingDetails() {
             </div>
             {route.stops.map((stop, i) => (
               <div key={i} className="flex items-center gap-4 flex-shrink-0">
-                <div className="w-8 border-t-2 border-dashed border-gray-300" />
-                <div className="px-5 py-3 bg-gray-50 rounded-2xl text-gray-700 font-semibold text-sm border border-gray-100">
+                <div className="w-8 border-t-2 border-dashed border-slate-700" />
+                <div className="px-5 py-3 bg-surface-hover rounded-2xl text-slate-400 font-semibold text-sm border border-surface-border">
                   {stop}
                 </div>
               </div>
             ))}
-            <div className="w-8 border-t-2 border-dashed border-gray-300 flex-shrink-0" />
+            <div className="w-8 border-t-2 border-dashed border-slate-700 flex-shrink-0" />
             <div className="flex-shrink-0 px-5 py-3 bg-gray-900 text-white rounded-2xl font-bold text-sm shadow-lg">
               🏁 {route.destination}
             </div>

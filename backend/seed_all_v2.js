@@ -29,9 +29,19 @@ const seedData = async () => {
         const adminPassword = await bcrypt.hash('Admin@123', 10);
         const admin = await User.create({
             name: 'System Admin',
-            email: 'admin@busms.com',
+            email: 'admin@fleetms.com',
             password: adminPassword,
             role: 'admin'
+        });
+
+        // 1b. Seed Customer
+        console.log('👤 Seeding Customer...');
+        const customerPassword = await bcrypt.hash('Customer@123', 10);
+        await User.create({
+            name: 'Test Customer',
+            email: 'customer@fleetms.com',
+            password: customerPassword,
+            role: 'customer'
         });
 
         // 2. Seed Buses
@@ -48,11 +58,11 @@ const seedData = async () => {
         console.log('👨‍✈️ Seeding Drivers...');
         const driverPassword = await bcrypt.hash('Driver@123', 10);
         const driverData = [
-            { name: 'Karthik Raja', email: 'karthik@busms.com', phone: '9840123456' },
-            { name: 'Senthil Kumar', email: 'senthil@busms.com', phone: '9840234567' },
-            { name: 'Muthu Krishnan', email: 'muthu@busms.com', phone: '9840345678' },
-            { name: 'Vijay Anand', email: 'vijay@busms.com', phone: '9840456789' },
-            { name: 'Arun Prakash', email: 'arun@busms.com', phone: '9840567890' }
+            { name: 'Karthik Raja', email: 'karthik@fleetms.com', phone: '9840123456' },
+            { name: 'Senthil Kumar', email: 'senthil@fleetms.com', phone: '9840234567' },
+            { name: 'Muthu Krishnan', email: 'muthu@fleetms.com', phone: '9840345678' },
+            { name: 'Vijay Anand', email: 'vijay@fleetms.com', phone: '9840456789' },
+            { name: 'Arun Prakash', email: 'arun@fleetms.com', phone: '9840567890' }
         ];
 
         const drivers = [];

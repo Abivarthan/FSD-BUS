@@ -19,19 +19,25 @@ function walk(dir) {
 const files = walk('./src');
 
 const replacements = {
-  '#0F1117': '#F8FAFC',
-  '#161B27': '#FFFFFF',
-  '#252D3D': '#E2E8F0',
-  '#1E2535': '#F1F5F9',
-  '#0C0F18': '#FFFFFF',
-  'text-white': 'text-gray-900',
-  'text-gray-400': 'text-gray-500',
-  'text-gray-300': 'text-gray-700',
-  'text-gray-200': 'text-gray-800',
-  'bg-black/60': 'bg-gray-900/40',
-  'fill="#6B7280"': 'fill="#94A3B8"',
-  'border-white/30': 'border-white/30', // keep spinner white
-  'border-t-white': 'border-t-white'
+  'bg-white': 'bg-surface-card',
+  'bg-gray-50': 'bg-surface-hover',
+  'bg-[#F8FAFC]': 'bg-surface',
+  'text-gray-900': 'text-white',
+  'text-gray-800': 'text-slate-300',
+  'text-gray-700': 'text-slate-400',
+  'text-gray-600': 'text-slate-500',
+  'text-gray-500': 'text-slate-500',
+  'border-gray-100': 'border-surface-border',
+  'border-gray-200': 'border-surface-border',
+  'border-gray-300': 'border-slate-700',
+  'shadow-gray-200/50': 'shadow-black/50',
+  'text-blue-600': 'text-primary',
+  'bg-blue-600': 'bg-primary',
+  'hover:bg-blue-700': 'hover:bg-primary-dark',
+  'from-blue-600': 'from-primary',
+  'to-blue-700': 'to-primary-dark',
+  'ring-blue-500': 'ring-primary',
+  'focus:ring-blue-500': 'focus:ring-primary',
 };
 
 files.forEach(file => {

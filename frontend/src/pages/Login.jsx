@@ -43,10 +43,10 @@ export default function Login() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 17H5a2 2 0 01-2-2V9a2 2 0 012-2h3m0 0V5l3-2 3 2v2m-6 0h6m0 0h3a2 2 0 012 2v6a2 2 0 01-2 2h-3m-6 0h6" />
             </svg>
           </div>
-          <h1 className="text-4xl font-display font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-4xl font-display font-bold text-white mb-4 leading-tight">
             Bus Management<br />System
           </h1>
-          <p className="text-gray-500 text-base leading-relaxed">
+          <p className="text-slate-500 text-base leading-relaxed">
             Centralized platform for bus operations, driver management, fuel monitoring, and analytics.
           </p>
 
@@ -58,8 +58,8 @@ export default function Login() {
             ].map(item => (
               <div key={item.label} className="card p-4 text-center">
                 <div className="text-2xl mb-1">{item.icon}</div>
-                <div className="text-lg font-bold text-gray-900">{item.value}</div>
-                <div className="text-xs text-gray-500">{item.label}</div>
+                <div className="text-lg font-bold text-white">{item.value}</div>
+                <div className="text-xs text-slate-500">{item.label}</div>
               </div>
             ))}
           </div>
@@ -75,12 +75,12 @@ export default function Login() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 17H5a2 2 0 01-2-2V9a2 2 0 012-2h3m0 0V5l3-2 3 2v2m-6 0h6m0 0h3a2 2 0 012 2v6a2 2 0 01-2 2h-3m-6 0h6" />
               </svg>
             </div>
-            <h1 className="text-2xl font-display font-bold text-gray-900">BusMS</h1>
+            <h1 className="text-2xl font-display font-bold text-white">BusMS</h1>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-2xl font-display font-bold text-gray-900">Welcome back</h2>
-            <p className="text-gray-500 mt-1">Sign in to your account</p>
+            <h2 className="text-2xl font-display font-bold text-white">Welcome back</h2>
+            <p className="text-slate-500 mt-1">Sign in to your account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -112,7 +112,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setForm({ email: 'admin@fleetms.com', password: 'Admin@123' })}
-                className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all flex flex-col items-center gap-1"
+                className="px-4 py-2 bg-surface-hover border border-surface-border rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all flex flex-col items-center gap-1"
               >
                 <span>🔑 Admin Role</span>
                 <span className="text-[8px] opacity-60 normal-case font-medium">admin@fleetms.com</span>
@@ -120,7 +120,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setForm({ email: 'customer@fleetms.com', password: 'Customer@123' })}
-                className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all flex flex-col items-center gap-1"
+                className="px-4 py-2 bg-surface-hover border border-surface-border rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all flex flex-col items-center gap-1"
               >
                 <span>👤 Customer Role</span>
                 <span className="text-[8px] opacity-60 normal-case font-medium">customer@fleetms.com</span>
@@ -147,7 +147,7 @@ export default function Login() {
             </button>
           </form>
           <div className="mt-10 text-center">
-            <p className="text-gray-500 text-sm">Don't have an account? <Link to="/register" className="text-primary font-bold hover:underline">Sign up for free</Link></p>
+            <p className="text-slate-500 text-sm">Don't have an account? <Link to="/register" className="text-primary font-bold hover:underline">Sign up for free</Link></p>
           </div>
         </div>
       </div>

@@ -93,21 +93,21 @@ export default function Sidebar({ open, onClose }) {
         <div className="h-16 flex items-center px-5 border-b border-[#E2E8F0]">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-primary-dark flex items-center justify-center shadow-lg shadow-primary/20">
-              <svg className="w-6 h-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.003 9.003 0 008.34-12.426L20 8M4 8l.66 1.574A9.003 9.003 0 0012 21z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 12l.01 0" />
               </svg>
             </div>
             <div>
-              <p className="text-base font-display font-black text-gray-900 leading-none">BusMS</p>
-              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Fleet Intelligence</p>
+              <p className="text-base font-display font-black text-white leading-none">BusMS</p>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Fleet Intelligence</p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest px-4 mb-4">
+          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest px-4 mb-4">
             Main Command
           </p>
           {adminLinks.map(({ to, label, icon }) => (
@@ -119,12 +119,12 @@ export default function Sidebar({ open, onClose }) {
                 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
                 ${isActive 
                   ? 'bg-primary/5 text-primary font-bold shadow-sm ring-1 ring-primary/10' 
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}
+                  : 'text-slate-500 hover:bg-surface-hover hover:text-white'}
               `}
             >
               {({ isActive }) => (
                 <>
-                  <span className={`transition-colors ${isActive ? 'text-primary' : 'text-gray-500 group-hover:text-gray-900'}`}>
+                  <span className={`transition-colors ${isActive ? 'text-primary' : 'text-slate-500 group-hover:text-white'}`}>
                     {icons[icon]}
                   </span>
                   <span className="text-sm">{label}</span>
@@ -135,18 +135,18 @@ export default function Sidebar({ open, onClose }) {
         </nav>
 
         {/* User info */}
-        <div className="p-4 border-t border-[#E2E8F0] bg-gray-50/50">
-          <div className="flex items-center gap-3 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="p-4 border-t border-[#E2E8F0] bg-surface-hover/50">
+          <div className="flex items-center gap-3 bg-surface-card p-3 rounded-2xl border border-surface-border shadow-sm">
             <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-sm">
               {user?.name?.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-gray-900 truncate">{user?.name}</p>
+              <p className="text-xs font-bold text-white truncate">{user?.name}</p>
               <p className="text-[10px] text-primary font-bold uppercase tracking-tighter">Administrator</p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 text-gray-500 hover:text-accent-red hover:bg-red-50 rounded-lg transition-all"
+              className="p-2 text-slate-500 hover:text-accent-red hover:bg-red-50 rounded-lg transition-all"
               title="Logout"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

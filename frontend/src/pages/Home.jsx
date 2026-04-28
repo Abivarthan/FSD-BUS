@@ -66,12 +66,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-surface selection:bg-primary/30 selection:text-white">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-8 py-6 bg-white border-b border-gray-100">
+      <nav className="flex items-center justify-between px-8 py-6 bg-surface-card border-b border-surface-border">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl cursor-pointer" onClick={() => navigate('/')}>B</div>
-          <span className="text-2xl font-display font-bold text-gray-900 tracking-tight cursor-pointer" onClick={() => navigate('/')}>BusMS</span>
+          <span className="text-2xl font-display font-bold text-white tracking-tight cursor-pointer" onClick={() => navigate('/')}>BusMS</span>
         </div>
         <div className="flex items-center gap-6">
           {user ? (
@@ -84,7 +84,7 @@ export default function Home() {
             </Link>
           ) : (
             <>
-              <Link to="/login" className="text-gray-600 font-medium hover:text-primary transition-colors">Login</Link>
+              <Link to="/login" className="text-slate-500 font-medium hover:text-primary transition-colors">Login</Link>
               <Link to="/register" className="btn-primary px-8 py-2.5 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transform hover:-translate-y-0.5 transition-all">Sign Up</Link>
             </>
           )}
@@ -93,28 +93,29 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-32 overflow-hidden">
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-[600px] h-[600px] bg-accent-violet/10 rounded-full blur-[120px]" />
         <div className="max-w-7xl mx-auto px-8 relative z-10">
           <div className="text-center mb-16">
-            <h1 className="text-6xl font-display font-black text-gray-900 mb-6 leading-[1.1]">
+            <h1 className="text-6xl font-display font-black text-white mb-6 leading-[1.1]">
               Travel Smarter, <br />
               <span className="text-primary italic">Live Better.</span>
             </h1>
-            <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
               Premium bus booking and fleet management platform. 
               Real-time tracking, secure bookings, and elite comfort.
             </p>
           </div>
 
           {/* Search Card */}
-          <div className="max-w-4xl mx-auto bg-white p-8 rounded-[32px] shadow-2xl shadow-gray-200/50 border border-gray-100 mb-20 animate-fade-in-up">
+          <div className="max-w-4xl mx-auto bg-surface-card p-8 rounded-[32px] shadow-2xl shadow-black/50 border border-surface-border mb-20 animate-fade-in-up">
             <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Origin</label>
                 <div className="relative group">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-primary transition-colors">📍</span>
                   <select 
-                    className="w-full pl-12 pr-10 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900 appearance-none cursor-pointer hover:bg-gray-100"
+                    className="w-full pl-12 pr-10 py-4 bg-surface-hover border border-surface-border/50 rounded-2xl focus:ring-2 focus:ring-primary/40 transition-all font-medium text-white appearance-none cursor-pointer hover:bg-surface-hover/80"
                     value={search.origin}
                     onChange={e => setSearch(p => ({ ...p, origin: e.target.value }))}
                   >
@@ -133,7 +134,7 @@ export default function Home() {
                 <div className="relative group">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-primary transition-colors">🏁</span>
                   <select 
-                    className="w-full pl-12 pr-10 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900 appearance-none cursor-pointer hover:bg-gray-100"
+                    className="w-full pl-12 pr-10 py-4 bg-surface-hover border border-surface-border/50 rounded-2xl focus:ring-2 focus:ring-primary/40 transition-all font-medium text-white appearance-none cursor-pointer hover:bg-surface-hover/80"
                     value={search.destination}
                     onChange={e => setSearch(p => ({ ...p, destination: e.target.value }))}
                   >
@@ -159,7 +160,7 @@ export default function Home() {
               </div>
             </form>
             {error && (
-              <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100 animate-fade-in">
+              <div className="mt-4 p-4 bg-red-950/20 text-red-400 rounded-xl text-sm font-medium border border-red-900/50 animate-fade-in">
                 {error}
               </div>
             )}
@@ -168,14 +169,14 @@ export default function Home() {
           {/* Results */}
           {routes.length > 0 && (
             <div className="max-w-4xl mx-auto space-y-4 animate-fade-in">
-              <h2 className="text-2xl font-display font-bold text-gray-900 mb-6">Available Routes</h2>
+              <h2 className="text-2xl font-display font-bold text-white mb-6">Available Routes</h2>
               {routes.map(route => (
-                <div key={route._id} className="group bg-white p-6 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all flex flex-col md:flex-row items-center justify-between gap-6 cursor-pointer" onClick={() => navigate(`/booking/${route._id}`)}>
+                <div key={route._id} className="group bg-surface-card p-6 rounded-2xl border border-surface-border hover:border-primary/30 hover:shadow-lg transition-all flex flex-col md:flex-row items-center justify-between gap-6 cursor-pointer" onClick={() => navigate(`/booking/${route._id}`)}>
                   <div className="flex items-center gap-6">
                     <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center text-3xl group-hover:bg-primary group-hover:text-white transition-colors">🚌</div>
                     <div>
-                      <h3 className="font-bold text-lg text-gray-900">{route.name}</h3>
-                      <p className="text-gray-500 text-sm">Departure: {route.schedule[0]?.time} | {route.vehicle_type}</p>
+                      <h3 className="font-bold text-lg text-white">{route.name}</h3>
+                      <p className="text-slate-500 text-sm">Departure: {route.schedule[0]?.time} | {route.vehicle_type}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-8">
@@ -183,7 +184,7 @@ export default function Home() {
                       <p className="text-xs font-bold text-gray-400 uppercase">Price</p>
                       <p className="text-2xl font-display font-black text-primary">${route.price}</p>
                     </div>
-                    <button className="px-6 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-primary transition-colors">Book Now</button>
+                    <button className="px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">Book Now</button>
                   </div>
                 </div>
               ))}
@@ -193,7 +194,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="py-32 bg-gray-50">
+      <section className="py-32 bg-surface-hover">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             {[
@@ -201,10 +202,10 @@ export default function Home() {
               { icon: '⚡', title: 'Real-time Updates', desc: 'Get live notifications on bus location and arrival times via our app.' },
               { icon: '⭐', title: 'Elite Comfort', desc: 'Our fleet features premium leather seating, climate control, and Wi-Fi.' },
             ].map(f => (
-              <div key={f.title} className="p-8 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all">
+              <div key={f.title} className="p-8 bg-surface-card rounded-3xl border border-surface-border shadow-sm hover:shadow-xl transition-all">
                 <div className="text-5xl mb-6">{f.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{f.title}</h3>
-                <p className="text-gray-500 leading-relaxed">{f.desc}</p>
+                <h3 className="text-xl font-bold text-white mb-4">{f.title}</h3>
+                <p className="text-slate-500 leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>

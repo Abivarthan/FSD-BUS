@@ -24,11 +24,11 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-white p-8 rounded-[32px] shadow-2xl shadow-gray-200/50 border border-gray-100 animate-fade-in">
+      <div className="w-full max-w-md bg-surface-card p-8 rounded-[32px] shadow-2xl shadow-black/50 border border-surface-border animate-fade-in">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">👤</div>
-          <h2 className="text-3xl font-display font-black text-gray-900">Create Account</h2>
-          <p className="text-gray-500 mt-2">Join BusMS for premium travel experiences</p>
+          <h2 className="text-3xl font-display font-black text-white">Create Account</h2>
+          <p className="text-slate-500 mt-2">Join BusMS for premium travel experiences</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -36,7 +36,7 @@ export default function Register() {
             <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Full Name</label>
             <input 
               type="text" 
-              className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900" 
+              className="w-full px-5 py-4 bg-surface-hover border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-white" 
               placeholder="John Doe"
               value={form.name}
               onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
@@ -47,7 +47,7 @@ export default function Register() {
             <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Email Address</label>
             <input 
               type="email" 
-              className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900" 
+              className="w-full px-5 py-4 bg-surface-hover border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-white" 
               placeholder="john@example.com"
               value={form.email}
               onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
@@ -58,7 +58,7 @@ export default function Register() {
             <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Password</label>
             <input 
               type="password" 
-              className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-900" 
+              className="w-full px-5 py-4 bg-surface-hover border-none rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all font-medium text-white" 
               placeholder="••••••••"
               value={form.password}
               onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
@@ -73,7 +73,7 @@ export default function Register() {
           </button>
         </form>
 
-        <p className="mt-8 text-center text-gray-500 text-sm">
+        <p className="mt-8 text-center text-slate-500 text-sm">
           Already have an account? <Link to="/login" className="text-primary font-bold hover:underline">Sign In</Link>
         </p>
       </div>

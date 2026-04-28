@@ -152,13 +152,13 @@ const TrackingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-surface-hover flex flex-col">
       {/* Header Area */}
-      <div className="bg-white border-b px-8 py-6">
+      <div className="bg-surface-card border-b px-8 py-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Vehicle Real-time Tracking</h1>
-            <p className="text-gray-500 mt-1 flex items-center gap-2">
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">Vehicle Real-time Tracking</h1>
+            <p className="text-slate-500 mt-1 flex items-center gap-2">
               <span className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
@@ -178,14 +178,14 @@ const TrackingPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-5 hover:shadow-md transition-shadow"
+            className="bg-surface-card p-6 rounded-2xl shadow-sm border border-surface-border flex items-center gap-5 hover:shadow-md transition-shadow"
           >
             <div className={`${stat.bg} p-4 rounded-xl`}>
               <stat.icon className={stat.color} size={28} />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-              <h3 className="text-2xl font-bold text-gray-900">{stat.value}</h3>
+              <p className="text-sm font-medium text-slate-500">{stat.label}</p>
+              <h3 className="text-2xl font-bold text-white">{stat.value}</h3>
             </div>
           </motion.div>
         ))}
@@ -195,17 +195,17 @@ const TrackingPage = () => {
       <div className="flex-1 px-8 pb-8 flex gap-8">
         {/* Sidebar */}
         <div className="w-1/4 flex flex-col gap-6">
-          <div className="bg-white rounded-2xl shadow-sm border p-5 flex-1 overflow-hidden flex flex-col">
+          <div className="bg-surface-card rounded-2xl shadow-sm border p-5 flex-1 overflow-hidden flex flex-col">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-800">Fleet List</h2>
-              <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600 font-bold uppercase tracking-wider">Tamil Nadu</span>
+              <h2 className="text-lg font-bold text-slate-300">Fleet List</h2>
+              <span className="text-xs bg-gray-100 px-2 py-1 rounded text-slate-500 font-bold uppercase tracking-wider">Tamil Nadu</span>
             </div>
             
             <div className="relative mb-6">
               <input 
                 type="text" 
                 placeholder="Search registration number..." 
-                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                className="w-full pl-10 pr-4 py-2.5 bg-surface-hover border rounded-xl focus:ring-2 focus:ring-primary focus:outline-none text-sm"
               />
               <Bus className="absolute left-3 top-3 text-gray-400" size={16} />
             </div>
@@ -218,26 +218,26 @@ const TrackingPage = () => {
                   className={`p-4 rounded-xl border transition-all cursor-pointer group ${
                     selectedVehicle?._id === v._id 
                     ? 'border-blue-500 bg-blue-50 shadow-sm' 
-                    : 'border-gray-100 hover:border-blue-200 hover:bg-gray-50'
+                    : 'border-surface-border hover:border-blue-200 hover:bg-surface-hover'
                   }`}
                 >
                   <div className="flex justify-between items-start">
-                    <span className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{v.registration_number}</span>
+                    <span className="font-bold text-white group-hover:text-primary transition-colors">{v.registration_number}</span>
                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                      v.speed > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                      v.speed > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-slate-400'
                     }`}>
                       {v.speed > 0 ? 'Moving' : 'Idle'}
                     </span>
                     {!mockVehicles.some(mv => mv._id === v._id) && (
-                      <span className="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
+                      <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
                         LIVE GPS
                       </span>
                     )}
                   </div>
-                  <div className="mt-3 flex items-center gap-3 text-sm text-gray-500">
+                  <div className="mt-3 flex items-center gap-3 text-sm text-slate-500">
                     <div className="flex items-center gap-1">
                       <User size={14} className="text-gray-400" />
-                      <span className="font-bold text-gray-700">{v.driver || 'Driver'}</span>
+                      <span className="font-bold text-slate-400">{v.driver || 'Driver'}</span>
                     </div>
                   </div>
                   <div className="mt-2 text-[11px] text-gray-400 flex items-center gap-2">
@@ -259,7 +259,7 @@ const TrackingPage = () => {
                   onClick={() => setShowGeofences(!showGeofences)}
                   className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${showGeofences ? 'bg-blue-500' : 'bg-gray-600'}`}
                 >
-                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${showGeofences ? 'left-6' : 'left-1'}`}></div>
+                  <div className={`absolute top-1 w-3 h-3 bg-surface-card rounded-full transition-all ${showGeofences ? 'left-6' : 'left-1'}`}></div>
                 </div>
               </div>
               <button 
@@ -293,39 +293,39 @@ const TrackingPage = () => {
                  initial={{ opacity: 0, x: 100 }}
                  animate={{ opacity: 1, x: 0 }}
                  exit={{ opacity: 0, x: 100 }}
-                 className="absolute top-6 right-6 w-80 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6 z-[1000]"
+                 className="absolute top-6 right-6 w-80 bg-surface-card/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6 z-[1000]"
                >
                  <div className="flex justify-between items-start mb-6">
                    <div>
-                     <h3 className="text-xl font-black text-gray-900">{selectedVehicle.registration_number}</h3>
-                     <p className="text-xs text-blue-600 font-bold uppercase tracking-wider">Real-time Telemetry</p>
+                     <h3 className="text-xl font-black text-white">{selectedVehicle.registration_number}</h3>
+                     <p className="text-xs text-primary font-bold uppercase tracking-wider">Real-time Telemetry</p>
                    </div>
-                   <button onClick={() => setSelectedVehicle(null)} className="text-gray-400 hover:text-gray-600">
+                   <button onClick={() => setSelectedVehicle(null)} className="text-gray-400 hover:text-slate-500">
                      <AlertTriangle size={20} />
                    </button>
                  </div>
 
                  <div className="space-y-4">
-                   <div className="flex justify-between items-center py-3 border-b border-gray-100">
-                     <div className="flex items-center gap-2 text-gray-500 font-medium">
+                   <div className="flex justify-between items-center py-3 border-b border-surface-border">
+                     <div className="flex items-center gap-2 text-slate-500 font-medium">
                        <Navigation size={16} />
                        <span>Speed</span>
                      </div>
-                     <span className="font-bold text-gray-900">{selectedVehicle.speed} km/h</span>
+                     <span className="font-bold text-white">{selectedVehicle.speed} km/h</span>
                    </div>
-                   <div className="flex justify-between items-center py-3 border-b border-gray-100">
-                     <div className="flex items-center gap-2 text-gray-500 font-medium">
+                   <div className="flex justify-between items-center py-3 border-b border-surface-border">
+                     <div className="flex items-center gap-2 text-slate-500 font-medium">
                        <User size={16} />
                        <span>Driver</span>
                      </div>
-                     <span className="font-bold text-gray-900">{selectedVehicle.driver}</span>
+                     <span className="font-bold text-white">{selectedVehicle.driver}</span>
                    </div>
-                   <div className="flex justify-between items-center py-3 border-b border-gray-100">
-                     <div className="flex items-center gap-2 text-gray-500 font-medium">
+                   <div className="flex justify-between items-center py-3 border-b border-surface-border">
+                     <div className="flex items-center gap-2 text-slate-500 font-medium">
                        <Clock size={16} />
                        <span>Last Update</span>
                      </div>
-                     <span className="font-bold text-gray-900 text-xs text-green-600">Just now</span>
+                     <span className="font-bold text-white text-xs text-green-600">Just now</span>
                    </div>
                  </div>
 
@@ -339,7 +339,7 @@ const TrackingPage = () => {
                     </button>
                     <button 
                       onClick={() => navigate('/reports/optimization')}
-                      className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all"
+                      className="flex-1 bg-primary text-white py-3 rounded-xl font-bold hover:bg-primary-dark shadow-lg shadow-blue-200 transition-all"
                     >
                       Analysis
                     </button>

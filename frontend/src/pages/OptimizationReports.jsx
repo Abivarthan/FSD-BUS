@@ -36,21 +36,21 @@ const OptimizationReports = () => {
     idle: r.idle_time
   }));
 
-  if (loading) return <div className="h-screen flex items-center justify-center font-bold text-blue-600">Generating Optimization Metrics...</div>;
+  if (loading) return <div className="h-screen flex items-center justify-center font-bold text-primary">Generating Optimization Metrics...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-surface-hover p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-black text-gray-900">Fleet Optimization Reports</h1>
-          <p className="text-gray-500 mt-1">Advanced analytics for fuel, efficiency, and route compliance</p>
+          <h1 className="text-3xl font-black text-white">Fleet Optimization Reports</h1>
+          <p className="text-slate-500 mt-1">Advanced analytics for fuel, efficiency, and route compliance</p>
         </div>
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border shadow-sm hover:shadow-md transition-all font-bold text-sm">
+          <button className="flex items-center gap-2 bg-surface-card px-4 py-2 rounded-xl border shadow-sm hover:shadow-md transition-all font-bold text-sm">
             <Download size={16} /> Export CSV
           </button>
-          <button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all font-bold text-sm">
+          <button className="flex items-center gap-2 bg-primary text-white px-5 py-2 rounded-xl shadow-lg shadow-blue-200 hover:bg-primary-dark transition-all font-bold text-sm">
             <Filter size={16} /> Filter Date Range
           </button>
         </div>
@@ -60,7 +60,7 @@ const OptimizationReports = () => {
       <div className="grid grid-cols-4 gap-6 mb-8">
         {[
           { label: 'Avg Efficiency', value: '12.4 km/l', icon: Fuel, color: 'text-green-600', bg: 'bg-green-50' },
-          { label: 'Total Distance', value: '1,240 km', icon: Map, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Total Distance', value: '1,240 km', icon: Map, color: 'text-primary', bg: 'bg-blue-50' },
           { label: 'Idle Alerts', value: '12', icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
           { label: 'Deviation Rate', value: '4.2%', icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
         ].map((stat, idx) => (
@@ -69,14 +69,14 @@ const OptimizationReports = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-white p-6 rounded-2xl shadow-sm border flex items-center gap-5"
+            className="bg-surface-card p-6 rounded-2xl shadow-sm border flex items-center gap-5"
           >
             <div className={`${stat.bg} p-4 rounded-xl`}>
               <stat.icon className={stat.color} size={24} />
             </div>
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-              <h3 className="text-xl font-black text-gray-900">{stat.value}</h3>
+              <h3 className="text-xl font-black text-white">{stat.value}</h3>
             </div>
           </motion.div>
         ))}
@@ -84,8 +84,8 @@ const OptimizationReports = () => {
 
       {/* Charts Section */}
       <div className="grid grid-cols-2 gap-8 mb-8">
-        <div className="bg-white p-8 rounded-3xl border shadow-sm">
-          <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+        <div className="bg-surface-card p-8 rounded-3xl border shadow-sm">
+          <h3 className="text-lg font-bold text-slate-300 mb-6 flex items-center gap-2">
             <TrendingUp size={20} className="text-blue-500" /> Fuel Efficiency by Vehicle
           </h3>
           <div className="h-64">
@@ -101,8 +101,8 @@ const OptimizationReports = () => {
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-3xl border shadow-sm">
-          <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+        <div className="bg-surface-card p-8 rounded-3xl border shadow-sm">
+          <h3 className="text-lg font-bold text-slate-300 mb-6 flex items-center gap-2">
             <Map size={20} className="text-green-500" /> Distance Travelled (KM)
           </h3>
           <div className="h-64">
@@ -126,17 +126,17 @@ const OptimizationReports = () => {
       </div>
 
       {/* Table Section */}
-      <div className="bg-white rounded-3xl border shadow-sm overflow-hidden">
-        <div className="px-8 py-6 border-b flex justify-between items-center bg-gray-50/50">
-          <h3 className="font-bold text-gray-900">Vehicle Performance Breakdown</h3>
+      <div className="bg-surface-card rounded-3xl border shadow-sm overflow-hidden">
+        <div className="px-8 py-6 border-b flex justify-between items-center bg-surface-hover/50">
+          <h3 className="font-bold text-white">Vehicle Performance Breakdown</h3>
           <div className="relative">
-            <input type="text" placeholder="Search vehicle..." className="pl-10 pr-4 py-2 border rounded-xl bg-white text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+            <input type="text" placeholder="Search vehicle..." className="pl-10 pr-4 py-2 border rounded-xl bg-surface-card text-sm focus:ring-2 focus:ring-primary outline-none" />
             <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
           </div>
         </div>
         <table className="w-full text-left">
           <thead>
-            <tr className="bg-gray-50 text-[10px] uppercase tracking-widest text-gray-500 font-bold border-b">
+            <tr className="bg-surface-hover text-[10px] uppercase tracking-widest text-slate-500 font-bold border-b">
               <th className="px-8 py-4">Registration</th>
               <th className="px-8 py-4">Total Distance</th>
               <th className="px-8 py-4">Fuel Efficiency</th>
@@ -147,11 +147,11 @@ const OptimizationReports = () => {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {reports.map((report, idx) => (
-              <tr key={idx} className="hover:bg-gray-50 transition-colors">
-                <td className="px-8 py-4 font-bold text-gray-900">{report.registration_number}</td>
+              <tr key={idx} className="hover:bg-surface-hover transition-colors">
+                <td className="px-8 py-4 font-bold text-white">{report.registration_number}</td>
                 <td className="px-8 py-4 text-sm">{report.total_distance} km</td>
                 <td className="px-8 py-4 text-sm font-medium text-green-600">{report.fuel_efficiency} km/l</td>
-                <td className="px-8 py-4 text-sm text-gray-500">{report.idle_time} mins</td>
+                <td className="px-8 py-4 text-sm text-slate-500">{report.idle_time} mins</td>
                 <td className="px-8 py-4">
                   <span className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase ${report.route_deviation === 'None' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                     {report.route_deviation === 'None' ? 'Compliant' : 'Deviation Detected'}
